@@ -1,3 +1,8 @@
+
+# Copyright (c) Facebook, Inc. and its affiliates.
+#
+# This source code is licensed under the MIT license found in the
+# LICENSE file in the root directory of this source tree.
 ###
 # Run pyannote speaker diarization (SD) models
 ###
@@ -181,7 +186,7 @@ def get_multiprocess(i, items, pyannote_cfg="dia_ami", max_size_min_input: int =
         get(items[i], i, pyannote_cfg=pyannote_cfg)
 
 
-def get_all(args):
+def main(args):
     languages = [lang if lang != "original" else "" for lang in args.languages]
     sessions = get_all_ids_from_dir(Path(args.root))
 
@@ -219,7 +224,7 @@ def get_all(args):
             )
 
 
-def main():
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         "Speaker diarization with pyannote."
         " Compute the speakers boundaries for the given audio files"
@@ -254,7 +259,7 @@ def main():
         type=int,
         default=None,
         help="If given, will split the inpit audio into several "
-        "overlapping chunks of size segment_min and merge the "
+        "overlapping chunks of size segment_min seconds and merge the "
         "resulting segmentation. In this case, a single speaker may end "
         "with several labels if he speaks across several segments."
         "In this case, the output file will be in json format "
@@ -269,8 +274,4 @@ def main():
     )
     args = parser.parse_args()
 
-    get_all(args)
-
-
-if __name__ == "__main__":
-    main()
+    main(args)
