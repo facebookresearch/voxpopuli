@@ -30,10 +30,10 @@ To build the speaker timestamps you will need to run pyannote on the unlabelled 
 python voxpopuli/segmentation/run_pyannote_sd.py --root $VOX_POPULI_DIR -l $LANGUAGES_LIST --segment-min 30
 ```
 
-Where $LANGUAGES_LIST is the list of languages you want to deal with. For example this command would run the segmentation for french and spanish:
+Where $LANGUAGES_LIST is the list of languages you want to deal with. For example this command will run the segmentation for french and spanish:
 
 ```
 python voxpopuli/segmentation/run_pyannote_sd.py --root $VOX_POPULI_DIR -l fr es --segment-min 30
 ```
 
-After running the script go grab a coffee, it will run for some time.
+After launching the script go grab a coffee, it will run for some time.
