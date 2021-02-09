@@ -406,7 +406,6 @@ class FinalAudioSegmenter:
         dir_audio = self.get_dir_paragraph(session_id)
 
         if not dir_audio.is_dir():
-            return
             raise RuntimeError(f"ERROR: paragraph data not found at {dir_audio}")
 
         dir_out = self.root_out / session_id
