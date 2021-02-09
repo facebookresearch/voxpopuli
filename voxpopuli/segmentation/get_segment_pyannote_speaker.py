@@ -289,11 +289,17 @@ def main():
         type=str,
         choices=["dia", "dia_ami", "sad_ami"],
     )
-    parser.add_argument("--min-duration", default=1.0, type=float)
-    parser.add_argument("--no-vad", action="store_true")
-    parser.add_argument("--min-dur-vad", default=15, type=int)
-    parser.add_argument("--max-dur-vad", default=30, type=int)
-    parser.add_argument("--max-silence-vad", default=1.5, type=float)
+    parser.add_argument("--min-duration", default=1.0, type=float,
+                        help="Ignore all speaker segments lasting less than the given number of seconds")
+    parser.add_argument("--no-vad", action="store_true",
+                        help="Does not apply the vad after the speaker segmentation")
+    parser.add_argument("--min-dur-vad", default=15, type=int,
+                        help="Min size of a sequence (in seconds) after applying the vad.")
+    parser.add_argument("--max-dur-vad", default=30, type=int,
+                        help="Max size of a sequence (in seconds) after applying the vad.")
+    parser.add_argument("--max-silence-vad", default=1.5, type=float,
+                        help="Maximum length of a silence allowed in the voice activity detection"
+                        " (the lower the stricter)")
     parser.add_argument(
         "--mode", choices=["all", "plenary", "non_plenary"], default="all"
     )
