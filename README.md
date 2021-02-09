@@ -20,6 +20,27 @@ Then just run:
 python setup.py develop
 ```
 
+## Labelled data
+
+### Download the align / wer data
+
+First, download the paragraph along with their correspoinding alignment / decoded data with:
+
+TODO: add aws link and download instructions.
+
+### Relaunch the segmentation from the decoded data
+
+To segment the parargaph into smaller sequences for the given language $LANG run:
+
+```
+python voxpopuli/segmentation/cut_with_align_files.py --dir_wer ${DIR_DOWNLOAD_WER}/${LANG}/wer \
+                                                      --dir_align ${DIR_DOWNLOAD_WER}/${LANG}/align/ \
+                                                      --dir_audio $VOX_POPULI_DIR \
+                                                      -o $OUTPUT_DIRECTORY \
+                                                      --path_chars ${DIR_DOWNLOAD}/${LANG}/${LANG}_grapheme.tokens \
+                                                      --lang $LANG
+```
+
 ## Unlabelled data
 
 ### Speaker diarization
