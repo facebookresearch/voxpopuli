@@ -24,9 +24,7 @@ python setup.py develop
 
 ### Download the align / wer data
 
-First, download the paragraph along with their correspoinding alignment / decoded data with:
-
-TODO: add aws link and download instructions.
+To segment the labelled data you will need the decoded text corresponding to each audio segment. They are available upon request: please contact mriviere@fb.com and post an issue. 
 
 ### Relaunch the segmentation from the decoded data
 
