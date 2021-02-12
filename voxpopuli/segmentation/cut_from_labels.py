@@ -6,6 +6,8 @@ import soundfile as sf
 import csv
 import argparse
 import tqdm
+import numpy as np
+import ast
 from pathlib import Path
 from voxpopuli.audio.utils import Timestamp
 from typing import Dict, List, Tuple
@@ -18,7 +20,7 @@ def parse_seq_path(seq_path: str) -> Tuple[str, str, str]:
     return out[0], out[1], out[2]
 
 
-def load_annot_file(path_input: Path) -> Dict[str, Dict[Path, Timestamp]]:
+def load_annot_file(path_input: Path) -> Dict[str, Dict[Path, List[Timestamp]]]:
     with open(path_input, "r") as csvfile:
         data = csv.reader(csvfile, delimiter="|")
 
@@ -26,19 +28,18 @@ def load_annot_file(path_input: Path) -> Dict[str, Dict[Path, Timestamp]]:
         idx_ = {x: i for i, x in enumerate(names)}
 
         idx_seq_name = idx_["path_seq"]
-        idx_start = idx_["t_start"]
-        idx_end = idx_["t_end"]
+        idx_vad = idx_["vad"]
 
         out = {}
         for row in data:
             path_seq = row[idx_seq_name]
             session_name, _, _ = parse_seq_path(path_seq)
 
+            vad = ast.literal_eval(row[idx_vad])
+
             if session_name not in out:
                 out[session_name] = {}
-            out[session_name][Path(path_seq)] = Timestamp(
-                float(row[idx_start]), float(row[idx_end])
-            )
+            out[session_name][Path(path_seq)] = [Timestamp(x[0], x[1]) for x in vad]
 
     return out
 
@@ -53,21 +54,29 @@ def cut_session(
     root_original: Path,
     root_out: Path,
     session_name: str,
-    ts_2_names: Dict[str, Timestamp],
+    ts_2_names: Dict[str, List[Timestamp]],
 ) -> None:
 
     sound, sr = sf.read(
         str(get_path_flac_from_session_name(root_original, session_name))
     )
-    for loc_path, ts in ts_2_names.items():
+    for loc_path, vad in ts_2_names.items():
         full_path = root_out / loc_path
         full_path.parent.mkdir(exist_ok=True, parents=True)
         sf.write(
             full_path,
-            sound[int(ts.t_start * sr) : int(ts.t_end * sr)],
+            cut_with_vad(sound, sr, vad),
             sr,
             subtype="PCM_16",
         )
+
+
+def cut_with_vad(sound: np.array, sr: int, vad: List[Timestamp]) -> np.array:
+
+    out = []
+    for ts in vad:
+        out += [sound[int(ts.t_start * sr) : int(ts.t_end * sr)]]
+    return np.concatenate(out, axis=0)
 
 
 class FileSegmenter:
@@ -75,7 +84,7 @@ class FileSegmenter:
         self,
         root_original: Path,
         root_out: Path,
-        annot_dict: Dict[str, Dict[Path, Timestamp]],
+        annot_dict: Dict[str, Dict[Path, List[Timestamp]]],
     ):
 
         self.root_original = root_original
