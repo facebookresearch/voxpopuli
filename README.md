@@ -20,6 +20,16 @@ Then just run:
 python setup.py develop
 ```
 
+## Labelled data
+
+To prepare the labelled data from the .tsv label files for a specifica language run:
+```
+python voxpopuli/segmentation/cut_from_labels.py --root_original $VOX_POPULI_DIR/sd_segments --tsv_file $VOX_POPULI_DIR/labels/${LANG}_all.tsv --output $VOX_POPULI_DIR/ssegmented_output/$LANG
+```
+
+TODO: add a .sh script handling the download and all languages 
+
+
 ## Unlabelled data
 
 ### Speaker diarization
