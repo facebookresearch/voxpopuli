@@ -20,11 +20,13 @@ Then just run:
 python setup.py develop
 ```
 
-## Labelled data
+## Rebuilding the labelled data with custom parameters
 
 ### Download the align / wer data
 
-To segment the labelled data you will need the decoded text corresponding to each audio segment. They are available upon request: please contact mriviere@fb.com and post an issue. 
+To segment the labelled data you will need the decoded text corresponding to each audio segment. They are available upon request: please contact mriviere@fb.com or post an issue. 
+
+If you want to use the force-aligned text for any purpose (like VAD), you can find it at https://dl.fbaipublicfiles.com/voxpopuli/align_data.tar.gz
 
 ### Relaunch the segmentation from the decoded data
 
