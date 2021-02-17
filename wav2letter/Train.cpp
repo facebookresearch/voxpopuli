@@ -210,7 +210,7 @@ using namespace w2l;
 void LoadFeatures(std::shared_ptr<fl::Sequential>  net0, std::shared_ptr<fl::Sequential> net){
 
     auto modules_0 = net0->modules();
-    int n_layers = modules_0.size() - 1
+    int n_layers = modules_0.size() - 1;
     for (int i =0; i< n_layers; i++){
         net->add(modules_0[i]);
     }
@@ -480,7 +480,7 @@ int main(int argc, char** argv) {
           _network,
           criterion);
       FL_LOG(fl::INFO)  << "Loaded";
-      PartialLoading(-1, _network, network);
+      LoadFeatures(_network, network);
       FL_LOG(fl::INFO)  << "[Criterion] " << criterion->prettyString();
     } else {
       FL_LOG(fl::INFO) << "Loading architecture file from " << archfiles[0];

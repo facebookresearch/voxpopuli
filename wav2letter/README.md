@@ -1,5 +1,7 @@
 # VoxPopuli : Wav2letter checkpoints
 
+See https://github.com/facebookresearch/flashlight
+
 ## Loading the checkpoint
 
 Wav2letter small wav2vec model : https://dl.fbaipublicfiles.com/voxpopuli/wav2letter_100k_small.tar.gz
@@ -31,6 +33,17 @@ void LoadFeatures(std::shared_ptr<fl::Sequential>  net0, std::shared_ptr<fl::Seq
         net->add(modules_0[i]);
     }
 }
+```
+
+## Building the Train and Decode binaries
+
+First install flashlight https://github.com/facebookresearch/flashlight
+
+Then:
+```
+mkdir build; cd build
+cmake .. 
+make -j40
 ```
 
 ## Results 

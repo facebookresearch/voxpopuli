@@ -15,8 +15,6 @@ if (NOT TARGET flashlight::flashlight-app-asr)
   message(FATAL_ERROR "flashlight must be build with app/asr for wav2letter++")
 endif ()
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/recipes)
-
 
 # ------------------------- Dedicated SSL Train executable --------------------------
 add_executable(
