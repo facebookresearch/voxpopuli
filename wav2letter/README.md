@@ -2,6 +2,12 @@
 
 See https://github.com/facebookresearch/flashlight
 
+Wav2letter implementation of wav2vec as described in https://arxiv.org/abs/2011.00093
+
+A more updated version can be available in the wav2letter repository. 
+
+The code included in this folder is a patched version of the original sample code developped by the [wav2letter team](https://github.com/facebookresearch/wav2letter/tree/masked_cpc) in order to include the pre-training.
+
 ## Loading the checkpoint
 
 Wav2letter small wav2vec model : https://dl.fbaipublicfiles.com/voxpopuli/wav2letter_100k_small.tar.gz
@@ -45,6 +51,17 @@ mkdir build; cd build
 cmake .. 
 make -j40
 ```
+
+## Building the Common Voice manifest files
+
+First, download the datasets you're interested in from the [Common Voice website](https://commonvoice.mozilla.org/en/datasets).
+Uncompress the data and copy them into $COMMON_VOICE_DIR/$LANG
+Then run the following command:
+```
+cd prepare_data
+bash build_cc_data.sh $COMMON_VOICE_DIR $LANG
+```
+The script will produce the manifest files associated with the validated, train, dev and test sets. As well as the lexicon and the token files.
 
 ## Results 
 
