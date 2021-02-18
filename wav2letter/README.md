@@ -63,6 +63,17 @@ bash build_cc_data.sh $COMMON_VOICE_DIR $LANG
 ```
 The script will produce the manifest files associated with the validated, train, dev and test sets. As well as the lexicon and the token files.
 
+## Fine-tuning the model
+
+A training script is available is the scripts folder. To use it run:
+```
+export COMMON_VOICE_DIR= path to the common voice directory described above
+export WAV2LETTERDIR= path to the directory where this README is
+bash train_lang.sh $DIR_CHECKPOINT $LANG
+```
+
+Where DIR_CHECKPOINT is the directory where you have uncomprssed the checkpoint and $LANG is the language you want to train your model on.
+
 ## Results 
 
 Performances on CommonVoices without language model:
