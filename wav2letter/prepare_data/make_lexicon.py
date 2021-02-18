@@ -1,3 +1,7 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+#
+# This source code is licensed under the MIT license found in the
+# LICENSE file in the root directory of this source tree.
 import argparse
 import logging
 from pathlib import Path
@@ -47,16 +51,17 @@ def load_lexicon(path_lexicon: Path) -> Dict[str, str]:
         out[word] = spelling
     return out
 
-def load_words_from_lst(path_lst : Path, n_best : int, min_occ : int, is_raw_text : bool):
+
+def load_words_from_lst(path_lst: Path, n_best: int, min_occ: int, is_raw_text: bool):
     """
-    Load words from an input file, which can be in w2l list format or 
+    Load words from an input file, which can be in w2l list format or
     a file with lines of sentences.
 
     paht_lst: input file
     n_best: top n frequent words to keep
     min_occ: minimum number of occurrences of each word
     is_raw_text: the input file only contains lines of text (True);
-                the input file is in w2l list format, including utterance ids and audio path (False) 
+                the input file is in w2l list format, including utterance ids and audio path (False)
     """
 
     with path_lst.open("r") as file_lst:
@@ -75,13 +80,12 @@ def load_words_from_lst(path_lst : Path, n_best : int, min_occ : int, is_raw_tex
             if word not in out:
                 out[word] = 0
 
-            out[word]+=1
+            out[word] += 1
 
     tmp = list(out.items())
     tmp = [(k, v) for k, v in tmp if v >= min_occ]
-    tmp.sort(reverse=True, key = lambda x : x[1])
-    return { x for x, v in tmp[:n_best]}
-
+    tmp.sort(reverse=True, key=lambda x: x[1])
+    return {x for x, v in tmp[:n_best]}
 
 
 def lexicon_from_lst(
@@ -90,8 +94,8 @@ def lexicon_from_lst(
     eow_char: str,
     path_out: Path,
     path_old_lexicon: Optional[Path] = None,
-    n_best : int = 5000,
-    min_occ : int = 10,
+    n_best: int = 5000,
+    min_occ: int = 10,
     is_raw_text: bool = False,
 ) -> None:
 
@@ -111,16 +115,22 @@ def lexicon_from_lst(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Build a lexicon from the given .lst file")
     parser.add_argument(
-        "-i","--input_lst", type=str, required=True, help="Path to the input lst file"
+        "-i", "--input_lst", type=str, required=True, help="Path to the input lst file"
     )
     parser.add_argument(
         "--tokens", type=str, required=True, help="Path to the token file"
     )
     parser.add_argument(
-        "--max_size_lexicon", type=int, help="Number of words to retain.", default=10000,
+        "--max_size_lexicon",
+        type=int,
+        help="Number of words to retain.",
+        default=10000,
     )
     parser.add_argument(
-        "--min_occ", type=int, help="Number of words to retain.", default=0,
+        "--min_occ",
+        type=int,
+        help="Number of words to retain.",
+        default=0,
     )
     parser.add_argument(
         "-o", "--output", type=str, required=True, help="Path to the output file."
@@ -133,9 +143,7 @@ if __name__ == "__main__":
         help="Add the given lexicon to the output file",
     )
     parser.add_argument(
-        "--raw_text",
-        action="store_true",
-        help="input is raw text instead of w2l list"
+        "--raw_text", action="store_true", help="input is raw text instead of w2l list"
     )
 
     args = parser.parse_args()
