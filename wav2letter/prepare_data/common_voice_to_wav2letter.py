@@ -11,7 +11,7 @@ from lst_utils import FileInfo, save_lst, get_speakers_list
 
 
 PUNCTUATION = (string.punctuation + "¡¿").replace("'", "").replace("-", "")
-PUNCTUATION += "–…»“«·—’”"
+PUNCTUATION += "–…»“«·—’”„"
 
 
 def get_size_audio_file(path_file: Path) -> float:
