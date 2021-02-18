@@ -10,8 +10,11 @@ import numpy as np
 import ast
 from pathlib import Path
 from voxpopuli.audio.utils import Timestamp
-from typing import Dict, List, Tuple
+from typing import Callable, Dict, List, Tuple
 from multiprocessing import Pool
+
+
+VadData = List[Timestamp]
 
 
 def parse_seq_path(seq_path: str) -> Tuple[str, str, str]:
@@ -20,26 +23,54 @@ def parse_seq_path(seq_path: str) -> Tuple[str, str, str]:
     return out[0], out[1], out[2]
 
 
-def load_annot_file(path_input: Path) -> Dict[str, Dict[Path, List[Timestamp]]]:
+def get_path_paragraph(row, idx_: Dict[str, int]) -> Path:
+    base_path = Path(row[idx_["session_id"]]) / row[idx_["paragraph_id"]]
+    if "lang" in idx_:
+        base_path = Path(row[idx_["lang"]]) / base_path
+    return base_path
+
+
+def get_path_fully_segmented(row, idx_: Dict[str, int]) -> Path:
+    return get_path_paragraph(row, idx_) / row[idx_["id_"]]
+
+
+def get_ts_base(row, idx_: Dict[str, int]) -> List[Timestamp]:
+    return [Timestamp(float(row[idx_["start_time"]]), float(row[idx_["end_time"]]))]
+
+
+def get_ts_speaker(row, idx_: Dict[str, int]) -> List[Timestamp]:
+    return [
+        Timestamp(float(row[idx_["speaker_start"]]), float(row[idx_["speaker_end"]]))
+    ]
+
+
+def get_ts_vad(row, idx_: Dict[str, int]) -> List[Timestamp]:
+    vad = ast.literal_eval(row[idx_["vad"]])
+    return [Timestamp(x[0], x[1]) for x in vad]
+
+
+def load_annot_file(
+    path_input: Path,
+    path_extractor: Callable,
+    timestamp_extractor: Callable,
+    suffix: str = ".flac",
+) -> Dict[str, Dict[Path, VadData]]:
     with open(path_input, "r") as csvfile:
         data = csv.reader(csvfile, delimiter="|")
 
         names = next(data)
         idx_ = {x: i for i, x in enumerate(names)}
-
-        idx_seq_name = idx_["path_seq"]
-        idx_vad = idx_["vad"]
+        idx_name = idx_["session_id"]
 
         out = {}
         for row in data:
-            path_seq = row[idx_seq_name]
-            session_name, _, _ = parse_seq_path(path_seq)
-
-            vad = ast.literal_eval(row[idx_vad])
+            session_name = row[idx_name]
+            path_seq = path_extractor(row, idx_).with_suffix(suffix)
+            vad = timestamp_extractor(row, idx_)
 
             if session_name not in out:
                 out[session_name] = {}
-            out[session_name][Path(path_seq)] = [Timestamp(x[0], x[1]) for x in vad]
+            out[session_name][path_seq] = vad
 
     return out
 
@@ -112,7 +143,18 @@ def main(args):
     path_out = Path(args.output)
     path_annotations = Path(args.tsv_file)
 
-    annot_dict = load_annot_file(path_annotations)
+    path_extractor = get_path_fully_segmented
+    if args.mode == "labelled":
+        timestamp_extractor = get_ts_vad
+    elif args.mode == "per_speaker_vad":
+        timestamp_extractor = get_ts_base
+    elif args.mode == "per_speaker":
+        timestamp_extractor = get_ts_speaker
+        path_extractor = get_path_paragraph
+    else:
+        raise RuntimeError(f"Invalid mode {args.mode}")
+
+    annot_dict = load_annot_file(path_annotations, path_extractor, timestamp_extractor)
     segmenter = FileSegmenter(path_data, path_out, annot_dict)
     segmenter.run(n_procs=args.n_procs)
 
@@ -137,6 +179,12 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--n-procs", help="Number of processes to run", type=int, default=8
+    )
+    parser.add_argument(
+        "--mode",
+        required=True,
+        type=str,
+        choices=["labelled", "per_speaker", "per_speaker_vad"],
     )
 
     main(parser.parse_args())
