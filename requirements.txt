@@ -7,3 +7,4 @@ PyYAML
 librosa
 pyannote.audio
 git+https://github.com/amsehili/auditok
+pyannote.audio
