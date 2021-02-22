@@ -1,0 +1,8 @@
+SoundFile
+tqdm
+auditok
+torch
+torchaudio
+PyYAML
+librosa
+pyannote.audio
