@@ -20,6 +20,27 @@ Then just run:
 python setup.py develop
 ```
 
+## Rebuilding the labelled data with custom parameters
+
+### Download the align / wer data
+
+To segment the labelled data you will need the decoded text corresponding to each audio segment. They are available upon request: please contact mriviere@fb.com or post an issue. 
+
+If you want to use the force-aligned text for any purpose (like VAD), you can find it at https://dl.fbaipublicfiles.com/voxpopuli/align_data.tar.gz
+
+### Relaunch the segmentation from the decoded data
+
+To segment the parargaph into smaller sequences for the given language $LANG run:
+
+```
+python voxpopuli/segmentation/cut_with_align_files.py --dir_wer ${DIR_DOWNLOAD_WER}/${LANG}/wer \
+                                                      --dir_align ${DIR_DOWNLOAD_WER}/${LANG}/align/ \
+                                                      --dir_audio $VOX_POPULI_DIR \
+                                                      -o $OUTPUT_DIRECTORY \
+                                                      --path_chars ${DIR_DOWNLOAD}/${LANG}/${LANG}_grapheme.tokens \
+                                                      --lang $LANG
+```
+
 ## Unlabelled data
 
 ### Speaker diarization

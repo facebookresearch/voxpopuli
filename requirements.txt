@@ -6,3 +6,6 @@ torchaudio
 PyYAML
 librosa
 pyannote.audio
+edlib
+editdistance
+pyannote.audio
