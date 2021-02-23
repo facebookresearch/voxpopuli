@@ -6,14 +6,21 @@ import re
 import string
 
 
-PUNCTUATIONS_TO_REMOVE = \
-    string.punctuation.replace("'", "").replace("-", "").replace("–", "").replace("/", "") + "«»“”…‘"
-PUNCTUATIONS_TO_SPACE = '-/–·'
+PUNCTUATIONS_TO_REMOVE = (
+    string.punctuation.replace("'", "")
+    .replace("-", "")
+    .replace("–", "")
+    .replace("/", "")
+    + "«»“”…‘"
+)
+PUNCTUATIONS_TO_SPACE = "-/–·"
 REMOVE_TRANSLATOR = str.maketrans("", "", PUNCTUATIONS_TO_REMOVE)
-SPACE_TRANSLATOR = str.maketrans(PUNCTUATIONS_TO_SPACE, ' '*len(PUNCTUATIONS_TO_SPACE))
+SPACE_TRANSLATOR = str.maketrans(
+    PUNCTUATIONS_TO_SPACE, " " * len(PUNCTUATIONS_TO_SPACE)
+)
 
 SPACE = chr(32)
-WHITESPACE_NORMALIZER = re.compile(r'\s+')
+WHITESPACE_NORMALIZER = re.compile(r"\s+")
 
 
 def correct_name_fbcluster_output(name_in: str) -> str:

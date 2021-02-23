@@ -11,7 +11,12 @@ import re
 import string
 import tqdm
 
-from voxpopuli.text import REMOVE_TRANSLATOR, SPACE_TRANSLATOR, SPACE, WHITESPACE_NORMALIZER
+from voxpopuli.text import (
+    REMOVE_TRANSLATOR,
+    SPACE_TRANSLATOR,
+    SPACE,
+    WHITESPACE_NORMALIZER,
+)
 
 
 def remove_parentheses(text: str) -> str:
@@ -22,7 +27,7 @@ def remove_parentheses(text: str) -> str:
     for i, c in enumerate(text):
         if c == "(" or c == "[":
             if num_p == 0 and i > start_i:
-                out += text[start_i : i]
+                out += text[start_i:i]
             num_p += 1
         elif c == ")" or c == "]":
             num_p -= 1
@@ -44,15 +49,15 @@ def digit2text(text: str, lang: str) -> str:
     is_negative = text[0] == "-"
     out = text.lstrip((string.punctuation))
     out_tmp = out.rstrip((string.punctuation))
-    suffix = "" if out == out_tmp else out[len(out_tmp):]
+    suffix = "" if out == out_tmp else out[len(out_tmp) :]
     out = out_tmp.replace(",", ".")
     out = out.replace(":", ".")
-    
+
     # leading characters, e.g. a10, h1n1, $10
     m = re.search(r"^(\D+)", out)
     if m:
         prefix = m.groups()[0]
-        return prefix + " " + digit2text(out[len(prefix):], lang) + suffix
+        return prefix + " " + digit2text(out[len(prefix) :], lang) + suffix
 
     # leading digits, e.g. 50th, 1900s
     to_format = "cardinal"
@@ -66,9 +71,9 @@ def digit2text(text: str, lang: str) -> str:
     # different cases for xx.xx
     if "." in out:
         segs = out.split(".")
-        if all([len(s) == 3 for s in segs[1:]]): # 12.000.000
+        if all([len(s) == 3 for s in segs[1:]]):  # 12.000.000
             out = out.replace(".", "")
-        else: # date 18.4.2009, IP address, time 18.30, etc.
+        else:  # date 18.4.2009, IP address, time 18.30, etc.
             norm_segs = []
             for s in segs:
                 norm_segs.append(digit2text(s, lang))
@@ -76,9 +81,9 @@ def digit2text(text: str, lang: str) -> str:
 
     m = re.search(r"\b(\d+)(\D+)", out)
     if m:
-        suffix = " " + digit2text(out[len(m.groups()[0]):], lang) + suffix
+        suffix = " " + digit2text(out[len(m.groups()[0]) :], lang) + suffix
         out = m.groups()[0]
-        
+
     if is_negative:
         out = "-" + out
 
@@ -129,10 +134,11 @@ def process_text(text: str, lang: str) -> str:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("LM data preparation")
     parser.add_argument(
-        "-i", "--input",
+        "-i",
+        "--input",
         type=str,
         required=True,
-        help="Input text data (one sentence per line)"
+        help="Input text data (one sentence per line)",
     )
     parser.add_argument("--lang", type=str, required=True)
     parser.add_argument("-o", "--output", type=str, required=True, help="Output file")
@@ -149,8 +155,7 @@ if __name__ == "__main__":
 
     out_data = []
     with Pool(args.n_proc) as p:
-        for out in tqdm.tqdm(p.starmap(process_text,
-                [(d, args.lang) for d in data])):
+        for out in tqdm.tqdm(p.starmap(process_text, [(d, args.lang) for d in data])):
             out_data.append(out)
 
     with open(args.output, "w") as o:
