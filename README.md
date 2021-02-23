@@ -37,6 +37,27 @@ python voxpopuli/segmentation/cut_from_labels.py --root_original $VOX_POPULI_DIR
                                                  --mode labelled
 ```
 
+## Rebuilding the labelled data with custom parameters
+
+### Download the align / wer data
+
+To segment the labelled data you will need the decoded text corresponding to each audio segment. They are available upon request: please contact mriviere@fb.com or post an issue. 
+
+If you want to use the force-aligned text for any purpose (like VAD), you can find it at https://dl.fbaipublicfiles.com/voxpopuli/align_data.tar.gz
+
+### Relaunch the segmentation from the decoded data
+
+To segment the parargaph into smaller sequences for the given language $LANG run:
+
+```
+python voxpopuli/segmentation/cut_with_align_files.py --dir_wer ${DIR_DOWNLOAD_WER}/${LANG}/wer \
+                                                      --dir_align ${DIR_DOWNLOAD_WER}/${LANG}/align/ \
+                                                      --dir_audio $VOX_POPULI_DIR \
+                                                      -o $OUTPUT_DIRECTORY \
+                                                      --path_chars ${DIR_DOWNLOAD}/${LANG}/${LANG}_grapheme.tokens \
+                                                      --lang $LANG
+```
+
 ## Unlabelled data
 
 ### Rebuild the data using existing timestamps
@@ -73,3 +94,22 @@ python voxpopuli/segmentation/run_pyannote_sd.py --root $VOX_POPULI_DIR -l fr es
 ```
 
 After launching the script go grab a coffee, it will run for some time.
+
+
+## File segmentation
+
+Once the speakers timestamps are built, you can run the file segmentation with:
+
+```
+python voxpopuli/segmentation/get_segment_pyannote_speaker.py --root $VOX_POPULI_DIR \
+                                                              --languages $LANGUAGES_LIST \
+                                                              -o $OUTPUT_DIR \
+                                                              --max-dur-vad $MAX_SIZE
+```
+
+This command will segment each audio file using the sepaker timestamps detected with ```run_pyannote_sd.py``` above. Then it will use a voice activity dectetion (VAD) algorithm to remove non-speech parts of the resulting sequences. The resulting audio tracks won't be longer than ```MAX_SIZE``` seconds.
+If you want to disable the  VAD use the flag ```--no-vad```.
+
+## PER data
+
+The labels and splits used in the PER experiments are the sames as the ones used in [CPC_audio](https://github.com/facebookresearch/CPC_audio) and can be downloaded [here](https://dl.fbaipublicfiles.com/cpc_audio/common_voices_splits.tar.gz).
