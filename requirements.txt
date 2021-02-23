@@ -9,4 +9,4 @@ pyannote.audio
 git+https://github.com/amsehili/auditok
 edlib
 editdistance
-pyannote.audio
+num2words

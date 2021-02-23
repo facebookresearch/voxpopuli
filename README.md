@@ -113,3 +113,11 @@ If you want to disable the  VAD use the flag ```--no-vad```.
 ## PER data
 
 The labels and splits used in the PER experiments are the sames as the ones used in [CPC_audio](https://github.com/facebookresearch/CPC_audio) and can be downloaded [here](https://dl.fbaipublicfiles.com/cpc_audio/common_voices_splits.tar.gz).
+
+## LM data
+1. Download both the raw text ("source release") and the tools ("tools") from the [Europarl corpus website](https://www.statmt.org/europarl/).
+2. Use `tools/split-sentences.perl` to first process all raw text into sentences. Remove xml tags from raw text and dedup.
+3. To prepare the LM data for ASR decoding, clean up the raw text by running
+```
+python voxpopuli/text/lm_clean.py --input [IN_TEXT_FILE] --lang [LANG] --output [OUT_TEXT_FILE]
+```
