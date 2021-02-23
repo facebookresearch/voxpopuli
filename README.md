@@ -37,3 +37,7 @@ python voxpopuli/segmentation/run_pyannote_sd.py --root $VOX_POPULI_DIR -l fr es
 ```
 
 After launching the script go grab a coffee, it will run for some time.
+
+## PER data
+
+The labels and splits used in the PER experiments are the sames as the ones used in [CPC_audio](https://github.com/facebookresearch/CPC_audio) and can be downloaded [here](https://dl.fbaipublicfiles.com/cpc_audio/common_voices_splits.tar.gz).
