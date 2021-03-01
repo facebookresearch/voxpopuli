@@ -153,12 +153,12 @@ We provide pre-trained wav2vec 2.0 (fairseq) models:
 
 | Language(s) | Pre-training Hours | Base Model (95M) |  Large Model (317M) |
 |:---:|:---:|:---:|:---:|
-| Es | 4.5K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_es.pt) |
-| Fr | 4.5K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_fr.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_fr.pt) |
-| It | 4.5K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
-| Nl | 4.5K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_nl.pt) |
-| Sv | 4.5K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
-| All 23 languages | 100K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
+| Es | 4.5K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_es.pt) |
+| Fr | 4.5K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_fr.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_fr.pt) |
+| It | 4.5K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
+| Nl | 4.5K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_nl.pt) |
+| Sv | 4.5K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
+| All 23 languages | 100K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
 
 In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
 in the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
