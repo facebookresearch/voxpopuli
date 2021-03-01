@@ -11,12 +11,22 @@ import re
 import string
 import tqdm
 
-from voxpopuli.text import (
-    REMOVE_TRANSLATOR,
-    SPACE_TRANSLATOR,
-    SPACE,
-    WHITESPACE_NORMALIZER,
+
+PUNCTUATIONS_TO_REMOVE = (
+    string.punctuation.replace("'", "")
+    .replace("-", "")
+    .replace("–", "")
+    .replace("/", "")
+    + "«»“”…‘"
 )
+PUNCTUATIONS_TO_SPACE = "-/–·"
+REMOVE_TRANSLATOR = str.maketrans("", "", PUNCTUATIONS_TO_REMOVE)
+SPACE_TRANSLATOR = str.maketrans(
+    PUNCTUATIONS_TO_SPACE, " " * len(PUNCTUATIONS_TO_SPACE)
+)
+
+SPACE = chr(32)
+WHITESPACE_NORMALIZER = re.compile(r"\s+")
 
 
 def remove_parentheses(text: str) -> str:
