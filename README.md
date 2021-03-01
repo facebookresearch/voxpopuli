@@ -11,7 +11,7 @@ VoxPopuli provides
 - 1.8K hours of transcribed speech data for 16 languages
 - 16.3K hours of speech-to-speech interpretation data for 16x15 directions
 
-The raw data is collected from 2009-2020 European Parliament event recordings. 
+The raw data is collected from 2009-2020 European Parliament event [recordings](https://multimedia.europarl.europa.eu/en/home). 
 We acknowledge the European Parliament for creating and sharing these materials.
 
 #### Detailed statistics
@@ -19,7 +19,7 @@ We acknowledge the European Parliament for creating and sharing these materials.
 <details><summary>Unlabelled and transcribed data</summary><p>
 
 | Language | Code | Unlabelled Hours | Transcribed Hours | Transcribed Speakers | Transcribed Tokens | LM Tokens |
-|---|---|---|---|---|---|---|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | English | En | 4.5K | 543 | 1313 | 4.8M | 60.0M |
 | German | De | 4.5K | 282 | 531 | 2.3M | 49.8M |
 | French | Fr | 4.5K | 211 | 534 | 2.1M | 58.6M |
@@ -50,7 +50,7 @@ We acknowledge the European Parliament for creating and sharing these materials.
 <details><summary>Speech-to-speech interpretation data</summary><p>
 
 | Source/Target | En | De | Fr | Es | Pl | It | Ro | Hu | Cs | Nl | Fi | Sk | Sl | Lt | Da | Total |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | En | - | 426 | 374 | 401 | 407  | 426 | 431 | 359 | 401 | 375 | 417 |  406 | 410 | 378 | 344 | 5.6K |
 | De | 171 | - | 171 | 184 | 203 | 201 | 189 | 195 | 203 | 186 | 206 |  198 | 207 | 158 | 169 | 2.6K |
 | Fr | 154 | 173 | - | 170 | 164 | 185 | 186 | 137 | 162 | 149 | 161 |  160 | 149 | 133 | 126 | 2.2K |
@@ -72,11 +72,11 @@ We acknowledge the European Parliament for creating and sharing these materials.
 </p></details>
 
 # Getting Data
-We provide raw audios and scripts to process them. The output format 
+We provide raw audios as well as scripts to segment and align them with transcription/interpretation. The output format 
 is [Ogg Vorbis](https://en.wikipedia.org/wiki/Vorbis) (16000Hz, 16-bit, mono-channel), 
 which is supported by common libraries such as `libsndfile` and `libsox`.
 
-As the first step, clone this repo for the scripts
+As the first step, clone this repo for the processing scripts
 ```bash
 git clone https://github.com/facebookresearch/voxpopuli.git
 ```
@@ -89,50 +89,51 @@ pip install tqdm torchaudio num2words
 ### Unlabelled Data
 First, download raw audios via
 ```bash
-python -m voxpopuli.download_audios --root ROOT --subset SUBSET
+python -m voxpopuli.download_audios --root [ROOT] --subset [SUBSET]
 ```
-where `SUBSET` specifies the data subset to download:
+which saves audios to `${ROOT}/raw_audios/[language]/[year]/[recording_id].ogg`.
+
+`SUBSET` specifies the data subset to download:
 
 |  --subset | # Languages | Hours | Years | Size | 
-|---|---|---|---|---|
+|:---:|:---:|:---:|:---:|:---:|
 | en, de, fr, es, pl, it, ro, hu, cs, nl, fi, hr, sk, sl, et, lt, pt, bg, el, lv, mt, sv or da | 1 | 2.7K-4.6K | 2009-2020 | 44G-75G |
 | 10k | 23 | 10K | 2019-2020 | 170G |
 | 100k | 23 | 100K | 2009-2020 | 1.7T |
-It saves audios to `${ROOT}/raw_audios/[language]/[year]/[recording_id].ogg`.
 
 Then, segment these audios via
 ```bash
-python -m voxpopuli.segment_unlabelled --root ROOT --subset SUBSET
+python -m voxpopuli.segment_unlabelled --root [ROOT] --subset [SUBSET]
 ```
 which outputs to `${ROOT}/unlabelled_data/[language]/[year]/[segment_id].ogg`
 
 ### Transcribed (ASR) Data
 First, download raw audios via
 ```bash
-python -m voxpopuli.download_audios --root ROOT --subset asr
+python -m voxpopuli.download_audios --root [ROOT] --subset asr
 ```
 which saves audios to `${ROOT}/raw_audios/original/[year]/[recording_id].ogg`.
 
 Then, segment these audios and align them with transcripts via
 ```bash
-python -m voxpopuli.get_asr_data --root ROOT
+python -m voxpopuli.get_asr_data --root [ROOT]
 ```
 which outputs
 - audios `${ROOT}/transcribed_data/[language]/[year]/[segment_id].ogg`
-- per-data-split example list (ID, transcript, speaker ID) `${ROOT}/transcribed_data/[language]/asr_[split].tsv` 
+- per-split example list (ID, transcript, speaker ID) `${ROOT}/transcribed_data/[language]/asr_[split].tsv` 
 
 ### Speech-to-Speech Interpretation Data
-First, follow the instructions above to set up ASR data (source data).
+First, follow the instructions above to set up ASR data (source audios and transcripts).
 
 Then, download target audios via
 ```bash
-python -m voxpopuli.download_audios --root ROOT --subset [TARGET_LANGUAGE]
+python -m voxpopuli.download_audios --root [ROOT] --subset [TARGET_LANGUAGE]
 ```
 which saves audios to `${ROOT}/raw_audios/[target_language]/[year]/[recording_id].ogg`.
 
 Finally, segment these audios and match them with source ones via
 ```bash
-python -m voxpopuli.get_s2s_data --root ROOT --source-lang [SOURCE_LANGUAGE] --target-lang [TARGET_LANGUAGE]
+python -m voxpopuli.get_s2s_data --root [ROOT] --source-lang [SOURCE_LANGUAGE] --target-lang [TARGET_LANGUAGE]
 ```
 which outputs
 - target audios `${ROOT}/transcribed_data/[language]/[target_language]/[year]/[segment_id].ogg`
@@ -144,14 +145,14 @@ and pre-process the data with `tools/split-sentences.perl`.
 
 Then, process the data with
 ```bash
-python -m voxpopuli.get_lm_data --input [IN_TEXT_FILE] --lang [LANG] --output [OUT_TEXT_FILE]
+python -m voxpopuli.get_lm_data --input [IN_TEXT_FILE] --lang [LANGUAGE] --output [OUT_TEXT_FILE]
 ```
 
 #  Pre-trained Models
 We provide pre-trained wav2vec 2.0 (fairseq) models:
 
 | Language(s) | Pre-training Hours | Base Model (95M) |  Large Model (317M) |
-|---|---|---|---|
+|:---:|:---:|:---:|:---:|
 | Es | 4.5K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_es.pt) |
 | Fr | 4.5K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_fr.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_fr.pt) |
 | It | 4.5K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
@@ -159,9 +160,8 @@ We provide pre-trained wav2vec 2.0 (fairseq) models:
 | Sv | 4.5K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
 | All 23 languages | 100K | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) | [Download](s3://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
 
-We evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
-in the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer) 
-(see also Section 4.3.1 of [our paper](https://arxiv.org/pdf/2101.00390.pdf)).
+In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
+in the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
 
 
 # What's New
@@ -169,9 +169,10 @@ in the [few-shot phoneme recognition setting](https://github.com/facebookresearc
 
 # License
 |  | License |
-| ------------- |:-------------:|
-| VoxPopuli data | [Legal notice](https://www.europarl.europa.eu/legal-notice/en/) [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/) |
-| Anything else | [CC BY-NC 4.0](https://github.com/facebookresearch/covost/blob/master/LICENSE) |
+|:---:|:---:|
+| VoxPopuli Data | [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/) (see also European Parliament's [legal notice](https://www.europarl.europa.eu/legal-notice/en/) for the raw data) |
+| LM Data | (Please check out the [EuroParl website](https://www.statmt.org/europarl/)) |
+| Code | [CC BY-NC 4.0](https://github.com/facebookresearch/covost/blob/master/LICENSE) |
 
 # Contact
 Changhan Wang (changhan@fb.com), Morgane Rivière (mriviere@fb.com), Ann Lee (annl@fb.com)
