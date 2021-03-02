@@ -15,7 +15,7 @@ from multiprocessing import Pool
 from voxpopuli.common import (
     is_plenary,
 )
-from voxpopuli.common.utils import get_all_ids_from_dir
+from voxpopuli.common.utils import get_path_full_audio, get_all_audio_for_lang
 from voxpopuli.segmentation import get_pyannote_segments
 from voxpopuli.common.lang import LangCode
 from auditok import AudioRegion
@@ -101,7 +101,7 @@ def to_wav(path_in: Path, path_out: Path) -> None:
 
 
 def split_audio(
-    flac_path: Path,
+    audio_path: Path,
     segments: List[Tuple[float, float, str]],
     out_root: Union[str, Path],
     pyannote_suffix: str,
@@ -112,14 +112,14 @@ def split_audio(
         shutil.rmtree(out_root)
     out_root.mkdir(parents=True)
 
-    sr = sf.info(flac_path).samplerate
-    flac_path = Path(flac_path)
+    sr = sf.info(audio_path).samplerate
+    audio_path = Path(audio_path)
 
     def save_clip(i, start, end):
         name = f"{i:03d}_{start:.0f}-{end:.0f}"
         out_audio_path = out_root / f"{name}.flac"
         save_timestamp(get_path_timestamp(out_audio_path, pyannote_suffix), start, end)
-        clip, _ = sf.read(flac_path, start=int(start * sr), stop=int(end * sr))
+        clip, _ = sf.read(audio_path, start=int(start * sr), stop=int(end * sr))
         sf.write(out_audio_path, clip, sr, subtype="PCM_16", format="FLAC")
         return out_audio_path
 
@@ -141,9 +141,13 @@ def split_audio(
     return out_paths
 
 
-def get_segments(en_root, pyannote_cfg, min_duration) -> List[Tuple[float, float, str]]:
+def get_segments(
+    path_audio, pyannote_cfg, min_duration
+) -> List[Tuple[float, float, str]]:
     try:
-        return get_pyannote_segments(en_root, pyannote_cfg, min_duration=min_duration)
+        return get_pyannote_segments(
+            path_audio, pyannote_cfg, min_duration=min_duration
+        )
     except FileNotFoundError:
         return None
 
@@ -153,7 +157,6 @@ class FileSegmenter:
         self,
         root_in: str,
         out_dir: str,
-        languages: List[str],
         pyannote_cfg="sad_ami",
         min_duration=1.0,
         split_vad=True,
@@ -165,7 +168,6 @@ class FileSegmenter:
 
         self.root_in = root_in
         self.out_dir = out_dir
-        self.languages = languages
         self.pyannote_cfg = pyannote_cfg
         self.min_duration = min_duration
         self.split_vad = split_vad
@@ -178,69 +180,60 @@ class FileSegmenter:
         return Path(self.root_in) / id_ / f"{id_}_{lang_code}"
 
     def get_out_root(self, id_, lang_code) -> Path:
-        return (
-            Path(self.out_dir)
-            / id_
-            / f"{id_}_{lang_code}"
-            / f"paragraphs_{self.pyannote_cfg}"
-        )
+        return Path(self.out_dir) / lang_code / id_ / "paragraphs"
 
-    def split_audio(self, id_):
+    def split_audio(self, audio_path: Path):
 
         found = 0
-        for lang in self.languages:
-            en_root = self.get_root_lang_id(id_, lang)
-            if not en_root.is_dir():
-                continue
-            segments = get_segments(en_root, self.pyannote_cfg, self.min_duration)
-            if segments is None:
-                continue
+        lang = audio_path.stem.split("_")[-1]
+        id_ = audio_path.stem.split("_")[0]
+        if not audio_path.exists():
+            return False
+        segments = get_segments(audio_path, self.pyannote_cfg, self.min_duration)
+        if segments is None:
+            return False
 
-            found += 1
-            flac_path = en_root / "full.flac"
-            out_root = self.get_out_root(id_, lang)
+        out_root = self.get_out_root(id_, lang)
 
-            pyannote_suffix = f".pyannote.{self.pyannote_cfg}"
-            out_audio = split_audio(flac_path, segments, out_root, pyannote_suffix)
+        pyannote_suffix = f".pyannote.{self.pyannote_cfg}"
+        out_audio = split_audio(audio_path, segments, out_root, pyannote_suffix)
 
-            if not self.split_vad:
-                continue
+        if not self.split_vad:
+            return True
 
-            for flac_path in out_audio:
-                dir_out = flac_path.parent / flac_path.stem
-                dir_out.mkdir()
-                path_timestamp_audio = get_path_timestamp(flac_path, pyannote_suffix)
-                shift = load_timestamp(path_timestamp_audio)[0]
-                vad_seq = split_vad_non_wav(
-                    flac_path,
-                    dir_out,
-                    min_dur=self.min_dur_vad,
-                    max_dur=self.max_dur_vad,
-                    max_silence=self.max_silence_vad,
-                    strict_min_dur=self.strict_min_dur_vad,
-                    shift=shift,
-                )
-                os.remove(flac_path)
-                if len(vad_seq) == 0:
-                    shutil.rmtree(dir_out)
-                    os.remove(flac_path.with_suffix(f".pyannote.{self.pyannote_cfg}"))
+        for audio_path in out_audio:
+            dir_out = audio_path.parent / audio_path.stem
+            dir_out.mkdir()
+            path_timestamp_audio = get_path_timestamp(audio_path, pyannote_suffix)
+            shift = load_timestamp(path_timestamp_audio)[0]
+            vad_seq = split_vad_non_wav(
+                audio_path,
+                dir_out,
+                min_dur=self.min_dur_vad,
+                max_dur=self.max_dur_vad,
+                max_silence=self.max_silence_vad,
+                strict_min_dur=self.strict_min_dur_vad,
+                shift=shift,
+            )
+            os.remove(audio_path)
+            if len(vad_seq) == 0:
+                shutil.rmtree(dir_out)
+                os.remove(audio_path.with_suffix(f".pyannote.{self.pyannote_cfg}"))
 
-        return found
+        return True
 
 
 def get_all(args):
-    id_list = [x for x in get_all_ids_from_dir(Path(args.root))]
-    if args.mode == "plenary":
-        id_list = [x for x in id_list if is_plenary(x)]
-    if args.mode == "non_plenary":
-        id_list = [x for x in id_list if not is_plenary(x)]
+    audio_paths = []
+    root = Path(args.root)
+    for lang in args.languages:
+        audio_paths += get_all_audio_for_lang(root, lang)
     if args.max_num is not None:
-        id_list = id_list[: args.max_num]
+        audio_paths = audio_paths[: args.max_num]
 
     segmenter = FileSegmenter(
         args.root,
         args.output,
-        args.languages,
         pyannote_cfg=args.pyannote_cfg,
         min_duration=args.min_duration,
         split_vad=not args.no_vad,
@@ -251,9 +244,9 @@ def get_all(args):
     found = 0
     with Pool(args.nproc) as p:
         for x in tqdm(
-            p.imap_unordered(segmenter.split_audio, id_list), total=len(id_list)
+            p.imap_unordered(segmenter.split_audio, audio_paths), total=len(audio_paths)
         ):
-            found += x
+            found += int(x)
 
     print(f"{found} audio data segmented")
 
@@ -318,9 +311,6 @@ def main():
         type=float,
         help="Maximum length of a silence allowed in the voice activity detection"
         " (the lower the stricter)",
-    )
-    parser.add_argument(
-        "--mode", choices=["all", "plenary", "non_plenary"], default="all"
     )
     args = parser.parse_args()
 

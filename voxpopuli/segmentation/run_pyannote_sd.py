@@ -17,18 +17,16 @@ from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
 from typing import List
-from voxpopuli.common import get_batches, get_lang_dir, is_plenary, get_all_ids_from_dir
+from voxpopuli.common import get_batches, is_plenary, get_all_audio_for_lang
 
 
-def check(root: str, pyannote_cfg="dia_ami"):
-    if not op.exists(op.join(root, "full.flac")):
+def check(path_audio: Path, pyannote_cfg="dia_ami"):
+    rttm_path = path_audio.parent / f"{path_audio.stem}.pyannote.{pyannote_cfg}.rttm"
+    pkl_path = path_audio.parent / f"{path_audio.stem}.pyannote.{pyannote_cfg}.pkl"
+    if rttm_path.exists() and pkl_path.exists():
         return True
-    rttm_path = op.join(root, f"pyannote.{pyannote_cfg}.rttm")
-    pkl_path = op.join(root, f"pyannote.{pyannote_cfg}.pkl")
-    if op.exists(rttm_path) and op.exists(pkl_path):
-        return True
-    json_path = op.join(root, f"pyannote.{pyannote_cfg}.json")
-    if op.exists(json_path):
+    json_path = path_audio.parent / f"{path_audio.stem}.pyannote.{pyannote_cfg}.json"
+    if json_path.exists():
         return True
     return False
 
@@ -112,21 +110,24 @@ def merge_segments(path_list_pkl: List[Path], size_overlap: float):
 
 
 def get_segments(
-    root: str, device: int = 0, pyannote_cfg="dia_ami", max_size_sec: int = 10 * 60
+    audio_path: str,
+    device: int = 0,
+    pyannote_cfg="dia_ami",
+    max_size_sec: int = 10 * 60,
 ):
 
-    flac_path = op.join(root, "full.flac")
-    if not op.exists(flac_path):
+    print(audio_path)
+    if not op.exists(audio_path):
         return
 
     torch.cuda.set_device(device)
 
-    id_ = Path(flac_path).parent.name
+    id_ = Path(audio_path).parent.name
 
     with TemporaryDirectory() as tmp_dir:
         tmp_dir = Path(tmp_dir)
         list_str, overlapp = segment_audio_overlap(
-            Path(flac_path), tmp_dir, max_size_sec
+            Path(audio_path), tmp_dir, max_size_sec
         )
         pyannote_pipeline = torch.hub.load(
             "pyannote/pyannote-audio", pyannote_cfg, pipeline=True
@@ -135,42 +136,43 @@ def get_segments(
         for index, path_ in enumerate(list_str):
             print(f"{id_}: running pyannote on {index} / {len(list_str)}")
             sd = pyannote_pipeline({"uri": "filename", "audio": path_})
-            rttm_path = Path(tmp_dir) / f"pyannote.{pyannote_cfg}_{index}.rttm"
+            rttm_path = (
+                audio_path.parent / f"{audio_path.stem}.pyannote.{pyannote_cfg}.rttm"
+            )
+            pkl_path = (
+                audio_path.parent / f"{audio_path.stem}.pyannote.{pyannote_cfg}.pkl"
+            )
             with open(rttm_path, "w") as f:
                 sd.write_rttm(f)
-            pkl_path = op.join(tmp_dir, f"pyannote.{pyannote_cfg}_{index}.pkl")
             with open(pkl_path, "wb") as f:
                 pkl.dump(sd, f)
             path_pkls.append(pkl_path)
 
         out_seg = merge_segments(path_pkls, overlapp)
 
-    path_out = Path(root) / f"pyannote.{pyannote_cfg}.json"
+    path_out = Path(audio_path).parent / f"pyannote.{pyannote_cfg}.json"
 
     with open(path_out, "w") as f:
         json.dump(out_seg, f, indent=2)
 
 
-def get(root: str, device: int = 0, pyannote_cfg="dia_ami"):
+def get(audio_path: str, device: int = 0, pyannote_cfg="dia_ami"):
     assert pyannote_cfg in {"dia_ami", "dia", "sad_ami"}
-    flac_path = op.join(root, "full.flac")
 
-    if not op.exists(flac_path):
+    if not audio_path.exists():
         return
 
     torch.cuda.set_device(device)
-
     pyannote_pipeline = torch.hub.load(
         "pyannote/pyannote-audio", pyannote_cfg, pipeline=True
     )
-    if not check(root, pyannote_cfg=pyannote_cfg):
-        sd = pyannote_pipeline({"uri": "filename", "audio": flac_path})
-        rttm_path = op.join(root, f"pyannote.{pyannote_cfg}.rttm")
-        with open(rttm_path, "w") as f:
-            sd.write_rttm(f)
-        pkl_path = op.join(root, f"pyannote.{pyannote_cfg}.pkl")
-        with open(pkl_path, "wb") as f:
-            pkl.dump(sd, f)
+    sd = pyannote_pipeline({"uri": "filename", "audio": audio_path})
+    rttm_path = audio_path.parent / f"{audio_path.stem}.pyannote.{pyannote_cfg}.rttm"
+    pkl_path = audio_path.parent / f"{audio_path.stem}.pyannote.{pyannote_cfg}.pkl"
+    with open(rttm_path, "w") as f:
+        sd.write_rttm(f)
+    with open(pkl_path, "wb") as f:
+        pkl.dump(sd, f)
 
 
 def get_multiprocess(i, items, pyannote_cfg="dia_ami", max_size_min_input: int = None):
@@ -187,34 +189,25 @@ def get_multiprocess(i, items, pyannote_cfg="dia_ami", max_size_min_input: int =
 
 def main(args):
     languages = [lang if lang != "original" else "" for lang in args.languages]
-    sessions = get_all_ids_from_dir(Path(args.root))
 
-    if args.filter == "plenary":
-        sessions = [id_ for id_ in sessions if is_plenary(id_)]
-    elif args.filter == "non_plenary":
-        sessions = [id_ for id_ in sessions if not is_plenary(id_)]
+    root = Path(args.root)
+    audio_paths = []
+    for lang in languages:
+        audio_paths += get_all_audio_for_lang(root, lang)
 
-    lang_dirs = []
-    for session_id in sessions:
-        path_session = Path(args.root) / session_id
-        langs = [
-            get_lang_dir(path_session, lang)
-            for lang in languages
-            if get_lang_dir(path_session, lang).is_dir()
-        ]
-        lang_dirs += langs
-
-    items = [d for d in lang_dirs if not check(d, args.pyannote_cfg)]
+    if not args.overwrite:
+        audio_paths = [x for x in audio_paths if not check(x, args.pyannote_cfg)]
 
     if args.max_num is not None:
-        items = items[: args.max_num]
+        audio_paths = audio_paths[: args.max_num]
     n_devices = torch.cuda.device_count()
 
     if n_devices < 2:
-        for d in items:
+        print(d)
+        for d in audio_paths:
             get(d)
     else:
-        batches = list(get_batches(items, batch_size=n_devices))
+        batches = list(get_batches(audio_paths, batch_size=n_devices))
         for batch in tqdm(batches):
             torch.multiprocessing.spawn(
                 fn=get_multiprocess,
@@ -232,18 +225,15 @@ if __name__ == "__main__":
         "--root", type=str, help="Root directory containing the session directories"
     )
     parser.add_argument(
-        "--filter",
-        type=str,
-        default="all",
-        help="All sessions / plenary sessions only / non plenary only "
-        "(default is all sessions).",
-        choices=["all", "plenary", "non_plenary"],
-    )
-    parser.add_argument(
         "--max-num",
         default=None,
         type=int,
         help="If given, maximal number of session to deal with.",
+    )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Set to true to overwrite previous results",
     )
     parser.add_argument(
         "-l",

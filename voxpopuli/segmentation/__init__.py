@@ -19,12 +19,12 @@ def load_segments_from_pkl(pkl_path, min_duration):
     return segments
 
 
-def get_pyannote_segments(root, pyannote_cfg, min_duration=0.1):
-    pkl_path = Path(root) / f"pyannote.{pyannote_cfg}.pkl"
+def get_pyannote_segments(path_audio, pyannote_cfg, min_duration=0.1):
+    pkl_path = path_audio.parent / f"{path_audio.stem}.pyannote.{pyannote_cfg}.pkl"
     if pkl_path.is_file():
         return load_segments_from_pkl(pkl_path, min_duration)
 
-    json_path = Path(root) / f"pyannote.{pyannote_cfg}.json"
+    json_path = path_audio.parent / f"{path_audio.stem}.pyannote.{pyannote_cfg}.json"
     if json_path.is_file():
         with open(json_path, "r") as f:
             segments = json.load(f)
