@@ -1,10 +1,6 @@
 # Processing Pipeline Customization
 
-We provide additional scripts for customizing our processing pipelines (e.g. different hyper-parameters). These
-scripts require rely on additional PyPI packages:
-```bash
-pip install edlib editdistance
-```
+We provide additional scripts for customizing our processing pipelines.
 
 ## Transcribed (ASR) Data
 

@@ -74,7 +74,7 @@ We acknowledge the European Parliament for creating and sharing these materials.
 We provide raw audios as well as scripts to segment and align them with transcription/interpretation. The output format 
 is [Ogg Vorbis](https://en.wikipedia.org/wiki/Vorbis) (16000Hz, 16-bit, mono-channel), 
 which is supported by common libraries such as `libsndfile` and `libsox` (they have Python frontends 
-provided by `SoundFile`, `torchaudio`, etc.).
+by [soundfile](https://github.com/bastibe/python-soundfile), [torchaudio](https://github.com/pytorch/audio), etc.).
 
 As the first step, clone this repo for the processing scripts
 ```bash
@@ -82,7 +82,7 @@ git clone https://github.com/facebookresearch/voxpopuli.git
 ```
 and install required PyPI packages:
 ```bash
-pip install tqdm torchaudio num2words
+pip install -r requirements.txt
 ```
 
 
@@ -150,7 +150,7 @@ python -m voxpopuli.get_lm_data --input [IN_TEXT_FILE] --lang [LANGUAGE] --outpu
 
 #  Pre-trained Models
 We provide pre-trained wav2vec 2.0 models 
-(both [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight) versions):
+(both [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight) implementations):
 
 | Language(s) | Pre-training Hours | Base Model (95M) |  Large Model (317M) |
 |:---:|:---:|:---:|:---:|
@@ -172,7 +172,7 @@ in the normal setting and the [few-shot phoneme recognition setting](https://git
 |  | License |
 |:---:|:---:|
 | VoxPopuli Data | [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/) (see also European Parliament's [legal notice](https://www.europarl.europa.eu/legal-notice/en/) for the raw data) |
-| LM Data | (Please check out the [EuroParl website](https://www.statmt.org/europarl/)) |
+| LM Data | (Please check out the [EuroParl website](https://www.statmt.org/europarl/) for the EuroParl portion) |
 | Code | [CC BY-NC 4.0](https://github.com/facebookresearch/covost/blob/master/LICENSE) |
 
 # Contact
