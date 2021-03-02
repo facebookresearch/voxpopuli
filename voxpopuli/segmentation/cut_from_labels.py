@@ -9,7 +9,8 @@ import tqdm
 import numpy as np
 import ast
 from pathlib import Path
-from voxpopuli.audio.utils import Timestamp, get_path_full_audio
+from voxpopuli.audio.utils import Timestamp
+from voxpopuli.common.utils import get_path_full_audio
 from typing import Callable, Dict, List, Tuple
 from multiprocessing import Pool
 

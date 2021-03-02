@@ -4,7 +4,12 @@
 # LICENSE file in the root directory of this source tree.
 from pathlib import Path
 from typing import List, Union
+from dataclasses import dataclass
 
+@dataclass
+class Timestamp:
+    t_start: float
+    t_end: float
 
 def get_batches(list_like, batch_size: int):
     for i in list(range(0, len(list_like), batch_size)):
