@@ -3,8 +3,13 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 from pathlib import Path
-from typing import Union
+from typing import List, Union
+from dataclasses import dataclass
 
+@dataclass
+class Timestamp:
+    t_start: float
+    t_end: float
 
 def get_batches(list_like, batch_size: int):
     for i in list(range(0, len(list_like), batch_size)):
@@ -13,11 +18,6 @@ def get_batches(list_like, batch_size: int):
 
 def is_plenary(_id: str):
     return _id.find("-PLENARY") > -1
-
-
-def get_lang_dir(path_dir: Path, lang: str) -> Path:
-    path_dir = Path(path_dir)
-    return path_dir / f"{path_dir.stem}_{lang}"
 
 
 def is_id_valid(name: str):
@@ -48,9 +48,35 @@ def is_id_valid(name: str):
     return True
 
 
-def get_all_ids_from_dir(path_root: Union[str, Path]):
+def get_all_years_for_lang(path_root: Union[str, Path], lang: str) -> List[str]:
+    path_lang = Path(path_root) / lang
     return [
         x.stem
-        for x in Path(path_root).glob("*")
-        if (x.is_dir() and is_id_valid(x.stem))
+        for x in path_lang.glob("*")
+        if (len(x.stem) == 4 and x.is_dir() and all(p.isdigit() for p in x.stem))
     ]
+
+
+def get_all_sessions_lang_year(path_root: Path, lang: str, year: str) -> List[str]:
+
+    audio = list((path_root / lang / year).glob(f"*_{lang}.ogg"))
+    return [x.stem.split("_")[0] for x in audio]
+
+
+def get_path_full_audio(path_root: Path, session_id: str, lang: str) -> Path:
+    year = session_id[:4]
+    return path_root / lang / year / f"{session_id}_{lang}.ogg"
+
+
+def get_all_audio_for_lang(path_root: Path, lang: str) -> List[Path]:
+
+    audio_paths = []
+    years = get_all_years_for_lang(path_root, lang)
+    for year in years:
+        all_sessions = get_all_sessions_lang_year(path_root, lang, year)
+        loc = [
+            get_path_full_audio(path_root, session_id, lang)
+            for session_id in all_sessions
+        ]
+        audio_paths += loc
+    return audio_paths

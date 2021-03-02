@@ -10,6 +10,7 @@ import numpy as np
 import ast
 from pathlib import Path
 from voxpopuli.audio.utils import Timestamp
+from voxpopuli.common.utils import get_path_full_audio
 from typing import Callable, Dict, List, Tuple
 from multiprocessing import Pool
 
@@ -75,22 +76,15 @@ def load_annot_file(
     return out
 
 
-# TODO: update with the ogg final path
-def get_path_flac_from_session_name(dir_original: Path, session_name: str) -> Path:
-
-    return dir_original / session_name / f"{session_name}_" / "full.flac"
-
-
 def cut_session(
     root_original: Path,
     root_out: Path,
     session_name: str,
     ts_2_names: Dict[str, List[Timestamp]],
+    lang: str,
 ) -> None:
 
-    sound, sr = sf.read(
-        str(get_path_flac_from_session_name(root_original, session_name))
-    )
+    sound, sr = sf.read(str(get_path_full_audio(root_original, session_name, lang)))
     for loc_path, vad in ts_2_names.items():
         full_path = root_out / loc_path
         full_path.parent.mkdir(exist_ok=True, parents=True)
@@ -116,15 +110,21 @@ class FileSegmenter:
         root_original: Path,
         root_out: Path,
         annot_dict: Dict[str, Dict[Path, List[Timestamp]]],
+        lang: str,
     ):
 
         self.root_original = root_original
         self.root_out = root_out
         self.annot_dict = annot_dict
+        self.lang = lang
 
     def cut_session(self, session_id: str):
         cut_session(
-            self.root_original, self.root_out, session_id, self.annot_dict[session_id]
+            self.root_original,
+            self.root_out,
+            session_id,
+            self.annot_dict[session_id],
+            self.lang,
         )
 
     def run(self, n_procs: int = 8):
@@ -155,7 +155,7 @@ def main(args):
         raise RuntimeError(f"Invalid mode {args.mode}")
 
     annot_dict = load_annot_file(path_annotations, path_extractor, timestamp_extractor)
-    segmenter = FileSegmenter(path_data, path_out, annot_dict)
+    segmenter = FileSegmenter(path_data, path_out, annot_dict, args.lang)
     segmenter.run(n_procs=args.n_procs)
 
 
