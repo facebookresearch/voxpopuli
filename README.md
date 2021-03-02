@@ -117,7 +117,13 @@ The labels and splits used in the PER experiments are the sames as the ones used
 ## LM data
 1. Download both the raw text ("source release") and the tools ("tools") from the [Europarl corpus website](https://www.statmt.org/europarl/).
 2. Use `tools/split-sentences.perl` to first process all raw text into sentences. Remove xml tags from raw text and dedup.
-3. To prepare the LM data for ASR decoding, clean up the raw text by running
+3. To prepare the LM data for ASR decoding, combine the Europarl data and the VoxPopuli data, clean up the raw text and prepare the vocabulary file by running
 ```
-python voxpopuli/text/lm_clean.py --input [IN_TEXT_FILE] --lang [LANG] --output [OUT_TEXT_FILE]
+python voxpopuli/text/lm_clean.py --raw_text_input [RAW_EUROPARL_TEXT_FILE] --tsv_text_input [VOXPOPULI_TSV_FILE] --lang [LANG] --output [OUT_TEXT_FILE] --vocab_file [OUT_VOCAB_FILE]
+```
+The script currently supports the 16 languages (cs, de, en, es, et, fi, fr, hr, hu, it, lt, nl, pl, ro, sk, sl) in VoxPopuli labelled data.
+4. Train an n-gram LM with KenLM toolkit
+```
+${KENLM_PATH}/lmplz -o ${n} --limit_vocab_file [OUT_VOCAB_FILE] < [OUT_TEXT_FILE] > ${n}gram_lm.arpa
+${KENLM_PATH}/build_binary ${n}gram_lm.arpa ${n}gram_lm.bin
 ```
