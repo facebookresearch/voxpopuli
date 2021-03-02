@@ -4,18 +4,23 @@
 # LICENSE file in the root directory of this source tree.
 
 import argparse
+import csv
 import logging
 from multiprocessing import Pool
 from num2words import num2words
+import os.path as op
 import re
 import string
 import tqdm
+from typing import List, Optional, Set
 
 from voxpopuli.text import (
+    LANG_TOKENS,
     REMOVE_TRANSLATOR,
     SPACE_TRANSLATOR,
     SPACE,
     WHITESPACE_NORMALIZER,
+    is_valid_text,
 )
 
 
@@ -118,30 +123,114 @@ def process_digits(text: str, lang: str) -> str:
     return " ".join(out)
 
 
-def process_text(text: str, lang: str) -> str:
-    # TODO: more rules, e.g. "%" -> percent, "°c" -> "degree celsius" for multiple languages
+def load_from_tsv(in_file: str) -> List[str]:
+    output = []
+    with open(in_file) as f:
+        reader = csv.DictReader(
+            f,
+            delimiter="|",
+            quotechar=None,
+            doublequote=False,
+            lineterminator="\n",
+            quoting=csv.QUOTE_NONE,
+        )
+
+        for e in reader:
+            e = dict(e)
+            if e["split"] != "train":
+                continue
+            text = e["normed_text"]
+            text = text.translate(REMOVE_TRANSLATOR)
+            output.append(text)
+
+    return output
+
+
+def process_text(text: str, lang: str, tokens: Optional[Set[str]] = None) -> str:
+    # TODO: more rules, e.g. "%" -> percent, "°c" -> "degree celsius", "‰", etc.
+    # for multiple languages
     out = text.lower()
     out = remove_parentheses(out)
     out = out.replace("’", "'")
     out = out.translate(SPACE_TRANSLATOR)
     out = process_digits(out, lang)
     out = out.translate(REMOVE_TRANSLATOR)
+    out = re.sub("'+", "'", out)
+    out = out.strip("'").replace("' ", " ").replace(" '", " ")
     out = WHITESPACE_NORMALIZER.sub(SPACE, out)
 
-    return out
+    vocab = set()
+    if tokens:
+        for w in out.split():
+            if is_valid_text(w, tokens):
+                vocab.add(w)
+
+    return out, vocab
+
+
+def main(args):
+    text = []
+    if args.raw_text_input and op.isfile(args.raw_text_input):
+        with open(args.raw_text_input, "r") as f:
+            text = [line.strip() for line in f.readlines()]
+    if args.tsv_text_input and op.isfile(args.tsv_text_input):
+        tsv_text = load_from_tsv(args.tsv_text_input)
+        text.extend(tsv_text)
+
+    assert len(text) > 0, "Cannot load any text. Aborting."
+
+    tokens = LANG_TOKENS[args.lang]
+
+    out_text = []
+    vocab = set()
+    with Pool(args.n_proc) as p:
+        for norm_text, uniq_vocab in tqdm.tqdm(
+            p.starmap(process_text, [(t, args.lang, tokens) for t in text])
+        ):
+            out_text.append(norm_text)
+            if tokens:
+                vocab |= uniq_vocab
+
+    with open(args.output, "w") as o:
+        for line in out_text:
+            o.write(line)
+            o.write("\n")
+
+    if args.vocab_file:
+        vocab = list(vocab)
+        vocab.sort()
+        with open(args.vocab_file, "w") as o:
+            o.write(" ".join(vocab))
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("LM data preparation")
     parser.add_argument(
-        "-i",
-        "--input",
+        "--raw_text_input",
+        type=str,
+        default=None,
+        help="Europarl text data (one sentence per line)",
+    )
+    parser.add_argument(
+        "--tsv_text_input",
+        type=str,
+        default=None,
+        help="VoxPopuli tsv file",
+    )
+    parser.add_argument(
+        "--lang",
         type=str,
         required=True,
-        help="Input text data (one sentence per line)",
+        choices=LANG_TOKENS.keys(),
+        help=f"Language of the input text. Voxpopuli provides labelled data in ({', '.join(LANG_TOKENS.keys())})",
     )
-    parser.add_argument("--lang", type=str, required=True)
     parser.add_argument("-o", "--output", type=str, required=True, help="Output file")
+    parser.add_argument(
+        "--vocab_file",
+        type=str,
+        default=None,
+        help="If set, generates a list of words with valid tokens, which can be used in KenLM training.",
+    )
     parser.add_argument(
         "--n_proc",
         type=int,
@@ -150,15 +239,8 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    with open(args.input, "r") as f:
-        data = f.readlines()
+    assert (
+        args.raw_text_input is not None or args.tsv_text_input is not None
+    ), "either --raw_text_input or --tsv_text_input should be set"
 
-    out_data = []
-    with Pool(args.n_proc) as p:
-        for out in tqdm.tqdm(p.starmap(process_text, [(d, args.lang) for d in data])):
-            out_data.append(out)
-
-    with open(args.output, "w") as o:
-        for line in out_data:
-            o.write(line)
-            o.write("\n")
+    main(args)
