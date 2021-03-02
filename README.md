@@ -120,7 +120,7 @@ python -m voxpopuli.get_asr_data --root [ROOT]
 ```
 which outputs
 - audios `${ROOT}/transcribed_data/[language]/[year]/[segment_id].ogg`
-- per-split example list (ID, transcript, speaker ID) `${ROOT}/transcribed_data/[language]/asr_[split].tsv` 
+- per-split manifest (ID, transcript, speaker ID) `${ROOT}/transcribed_data/[language]/asr_[split].tsv` 
 
 ### Speech-to-Speech Interpretation Data
 First, follow the instructions above to set up ASR data (source audios and transcripts).
@@ -137,7 +137,10 @@ python -m voxpopuli.get_s2s_data --root [ROOT] --source-lang [SOURCE_LANGUAGE] -
 ```
 which outputs
 - target audios `${ROOT}/transcribed_data/[language]/[target_language]/[year]/[segment_id].ogg`
-- example list (source ID, transcript, speaker ID, target ID) `${ROOT}/transcribed_data/[language]/[target_language]/s2s.tsv`
+- manifest (source ID, transcript, speaker ID, target ID) `${ROOT}/transcribed_data/[language]/[target_language]/s2s.tsv`
+
+We also human-transcribe part of the target audios (for English, French and Spanish only) to allow more accurate alignments. 
+To use them instead of machine transcriptions in the alignments, add `--use-annotated-target` to the command line.
 
 ### Language Modeling (LM) Data
 First, download both data ("source release") and tools ("tools") from the [EuroParl website](https://www.statmt.org/europarl/),
