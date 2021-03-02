@@ -9,9 +9,9 @@ A large-scale multilingual speech corpus for representation learning, semi-super
 VoxPopuli provides 
 - 100K hours of unlabelled speech data for 23 languages
 - 1.8K hours of transcribed speech data for 16 languages
-- 16.3K hours of speech-to-speech interpretation data for 16x15 directions
+- 17.3K hours of speech-to-speech interpretation data for 16x15 directions
 
-The raw data is collected from 2009-2020 European Parliament event [recordings](https://multimedia.europarl.europa.eu/en/home). 
+The raw data is collected from 2009-2020 [European Parliament event recordings](https://multimedia.europarl.europa.eu/en/home). 
 We acknowledge the European Parliament for creating and sharing these materials.
 
 #### Detailed statistics
@@ -51,30 +51,30 @@ We acknowledge the European Parliament for creating and sharing these materials.
 
 | Source/Target | En | De | Fr | Es | Pl | It | Ro | Hu | Cs | Nl | Fi | Sk | Sl | Lt | Da | Total |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| En | - | 426 | 374 | 401 | 407  | 426 | 431 | 359 | 401 | 375 | 417 |  406 | 410 | 378 | 344 | 5.6K |
-| De | 171 | - | 171 | 184 | 203 | 201 | 189 | 195 | 203 | 186 | 206 |  198 | 207 | 158 | 169 | 2.6K |
-| Fr | 154 | 173 | - | 170 | 164 | 185 | 186 | 137 | 162 | 149 | 161 |  160 | 149 | 133 | 126 | 2.2K |
-| Es | 119 | 129 | 121 | - | 114 | 140 | 124 | 90 | 114 | 110 | 121 |  111 | 105 | 82 | 83 | 1.6K |
-| Pl | 62 | 62 | 48 | 50 | - | 63 | 53 | 42 | 64 | 42 | 54 | 60 | 56 | 50 | 32 | 738 |
-| It | 58 | 67 | 61 | 69 | 65 | - | 68 | 56 | 61 | 57 | 64 | 60 | 64 | 49 | 54 | 853 |
-| Ro | 55 | 54 | 52 | 53 | 46 | 56 | - | 37 | 47 | 41 | 46 | 48 | 44 | 37 | 27 | 643 |
-| Hu | 28 | 36 | 23 | 25 | 29 | 29 | 27 | - | 26 | 20 | 31 | 28 | 26 | 21 | 17 | 366 |
-| Cs | 37 | 34 | 27 | 29 | 36 | 31 | 31 | 23 | - | 23 | 30 | 54 | 30 | 26 | 17 | 428 |
-| Nl | 28 | 40 | 30 | 26 | 26 | 35 | 23 | 24 | 25 | - | 31 | 24 | 22 | 19 | 24 | 377 |
-| Fi | 14 | 17 | 13 | 12 | 13 | 12 | 13 | 12 | 12 | 10 | - | 14 | 12 | 11 | 9 | 174 |
-| Hr | 31 | 27 | 24 | 24 | 28 | 28 | 26 | 23 | 26 | 22 | 26 | 28 | 38 | 22 | 20 | 393 |
-| Sk | 20 | 22 | 13 | 14 | 19 | 16 | 16 | 14 | 31 | 13 | 16 | - | 17 | 13 | 10 | 234 |
-| Sl | 5 | 6 | 4 | 5 | 5 | 6 | 5 | 4 | 5 | 4 | 5 | 6 | - | 4 | 3 | 67 |
-| Et | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 16 |
+| En | - | 463 | 427 | 441 | 432 | 461 | 457 | 382 | 427 | 400 | 442 | 433 | 434 | 398 | 370 | 6.0K |
+| De | 187 | - | 196 | 204 | 214 | 217 | 198 | 205 | 214 | 196 | 217 | 208 | 218 | 164 | 179 | 2.8K |
+| Fr | 169 | 187 | - | 187 | 172 | 197 | 195 | 144 | 170 | 158 | 168 | 168 | 156 | 139 | 134 | 2.3K |
+| Es | 130 | 138 | 135 | - | 118 | 148 | 128 | 93 | 118 | 115 | 124 | 114 | 108 | 83 | 86 | 1.6K |
+| Pl | 68 | 66 | 54 | 55 | - | 67 | 55 | 43 | 67 | 42 | 55 | 62 | 57 | 50 | 34 | 775 |
+| It | 69 | 77 | 76 | 79 | 72 | - | 75 | 61 | 68 | 64 | 71 | 66 | 70 | 53 | 60 | 961 |
+| Ro | 60 | 59 | 59 | 58 | 49 | 61 | - | 38 | 50 | 43 | 48 | 50 | 46 | 38 | 29 | 688 |
+| Hu | 30 | 38 | 25 | 27 | 29 | 30 | 27 | - | 27 | 20 | 31 | 29 | 26 | 21 | 18 | 378 |
+| Cs | 39 | 35 | 29 | 30 | 36 | 32 | 31 | 23 | - | 23 | 29 | 55 | 29 | 25 | 18 | 434 |
+| Nl | 31 | 43 | 35 | 29 | 27 | 38 | 24 | 25 | 25 | - | 32 | 25 | 23 | 19 | 25 | 401 |
+| Fi | 15 | 18 | 15 | 13 | 13 | 13 | 13 | 12 | 13 | 11 | - | 14 | 12 | 11 | 9 | 182 |
+| Hr | 31 | 27 | 27 | 24 | 27 | 28 | 24 | 22 | 24 | 22 | 24 | 26 | 37 | 21 | 20 | 384 |
+| Sk | 21 | 22 | 14 | 16 | 19 | 16 | 16 | 14 | 32 | 13 | 16 | - | 17 | 13 | 10 | 239 |
+| Sl | 6 | 6 | 4 | 5 | 5 | 6 | 5 | 4 | 5 | 4 | 5 | 6 | - | 4 | 3 | 68 |
 | Lt | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | - | 0 | 13 |
-| Total | 785 | 1.1K | 963 | 1.1K | 1.2K | 1.2K | 1.2K | 1.0K | 1.2K | 1.1K | 1.2K | 1.2K | 1.2K | 1.0K | 936 | 16.3K |
+| Total | 857 | 1.2K | 1.1K | 1.2K | 1.2K | 1.3K | 1.2K | 1.1K | 1.2K | 1.1K | 1.3K | 1.3K | 1.2K | 1.0K | 995 | 17.3K |
 
 </p></details>
 
 # Getting Data
 We provide raw audios as well as scripts to segment and align them with transcription/interpretation. The output format 
 is [Ogg Vorbis](https://en.wikipedia.org/wiki/Vorbis) (16000Hz, 16-bit, mono-channel), 
-which is supported by common libraries such as `libsndfile` and `libsox`.
+which is supported by common libraries such as `libsndfile` and `libsox` (they have Python frontends 
+provided by `SoundFile`, `torchaudio`, etc.).
 
 As the first step, clone this repo for the processing scripts
 ```bash
@@ -103,7 +103,7 @@ which saves audios to `${ROOT}/raw_audios/[language]/[year]/[recording_id].ogg`.
 
 Then, segment these audios via
 ```bash
-python -m voxpopuli.segment_unlabelled --root [ROOT] --subset [SUBSET]
+python -m voxpopuli.get_unlabelled_data --root [ROOT] --subset [SUBSET]
 ```
 which outputs to `${ROOT}/unlabelled_data/[language]/[year]/[segment_id].ogg`
 
@@ -149,19 +149,20 @@ python -m voxpopuli.get_lm_data --input [IN_TEXT_FILE] --lang [LANGUAGE] --outpu
 ```
 
 #  Pre-trained Models
-We provide pre-trained wav2vec 2.0 (fairseq) models:
+We provide pre-trained wav2vec 2.0 models 
+(both [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight) versions):
 
 | Language(s) | Pre-training Hours | Base Model (95M) |  Large Model (317M) |
 |:---:|:---:|:---:|:---:|
-| Es | 4.5K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_es.pt) |
-| Fr | 4.5K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_fr.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_fr.pt) |
-| It | 4.5K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
-| Nl | 4.5K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_nl.pt) |
-| Sv | 4.5K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
-| All 23 languages | 100K | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) | [Download](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
+| Es | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_es.pt) |
+| Fr | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_fr.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_fr.pt) |
+| It | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
+| Nl | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_nl.pt) |
+| Sv | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
+| All 23 languages | 100K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k_wav2letter.tar.gz) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
 
-In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
-in the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
+The wav2letter implementation follows [this paper](https://arxiv.org/abs/2011.00093). In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
+in the normal setting and the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
 
 
 # What's New
