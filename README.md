@@ -143,12 +143,20 @@ We also human-transcribe part of the target audios (for English, French and Span
 To use them instead of machine transcriptions in the alignments, add `--use-annotated-target` to the command line.
 
 ### Language Modeling (LM) Data
-First, download both data ("source release") and tools ("tools") from the [EuroParl website](https://www.statmt.org/europarl/),
-and pre-process the data with `tools/split-sentences.perl`.
+We combine VoxPopuli transcripts and text data from [Europarl](https://www.statmt.org/europarl/) for LM training.
 
-Then, process the data with
+Download VoxPopuli and Europarl text data, process the raw text and generate the vocabulary via
 ```bash
-python -m voxpopuli.get_lm_data --input [IN_TEXT_FILE] --lang [LANGUAGE] --output [OUT_TEXT_FILE]
+python -m voxpopuli.get_lm_data --root [ROOT] --lang [LANGUAGE]
+```
+which outputs
+- sentences `${ROOT}/lm_data/[language]/sentences.txt`
+- vocabulary `${ROOT}/lm_data/[language]/vocabulary.txt`
+
+To train an n-gram LM with [KenLM](https://github.com/kpu/kenlm), run
+```bash
+${KENLM_PATH}/lmplz -o ${n} --limit_vocab_file [OUT_VOCAB_FILE] < [OUT_TEXT_FILE] > ${n}gram_lm.arpa
+${KENLM_PATH}/build_binary ${n}gram_lm.arpa ${n}gram_lm.bin
 ```
 
 #  Pre-trained Models
@@ -162,7 +170,7 @@ We provide pre-trained wav2vec 2.0 models
 | It | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
 | Nl | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_nl.pt) |
 | Sv | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
-| All 23 languages | 100K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k_wav2letter.tar.gz) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
+| All 23 languages | 100K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) / [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k_wav2letter.tar.gz) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
 
 The wav2letter implementation follows [this paper](https://arxiv.org/abs/2011.00093). In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
 in the normal setting and the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
@@ -175,7 +183,7 @@ in the normal setting and the [few-shot phoneme recognition setting](https://git
 |  | License |
 |:---:|:---:|
 | VoxPopuli Data | [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/) (see also European Parliament's [legal notice](https://www.europarl.europa.eu/legal-notice/en/) for the raw data) |
-| LM Data | (Please check out the [EuroParl website](https://www.statmt.org/europarl/) for the EuroParl portion) |
+| LM Data | (Please check out the [Europarl website](https://www.statmt.org/europarl/) for the Europarl portion) |
 | Code | [CC BY-NC 4.0](https://github.com/facebookresearch/covost/blob/master/LICENSE) |
 
 # Contact

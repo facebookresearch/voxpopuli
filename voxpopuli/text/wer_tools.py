@@ -13,7 +13,7 @@ from pathlib import Path
 import edlib
 import editdistance
 
-from voxpopuli.pipeline import correct_name_fbcluster_output
+from voxpopuli.segmentation import correct_name_fbcluster_output
 
 
 class CharAlignToken(NamedTuple):

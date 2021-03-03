@@ -4,6 +4,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import argparse
+import torchaudio
 import shutil
 import os
 import torch
@@ -13,25 +14,23 @@ from pathlib import Path
 from typing import NamedTuple, List, Optional, Set, Tuple
 from multiprocessing import Pool
 
-import torchaudio
-
-from voxpopuli.pipeline.wer_tools import (
+from voxpopuli.text.wer_tools import (
     WordAlignFile,
     load_word_align_file,
     get_partial_transcriptions,
     get_wer,
     get_ler,
     create_word_align_file,
-    reinsert_punctuation
+    reinsert_punctuation,
 )
-from voxpopuli.pipeline.word_align_tools import (
+from voxpopuli.text.word_align_tools import (
     AlignedData,
     AlignedWord,
     cut_align_data,
     load_audio_align_wav2letter,
 )
 
-from voxpopuli.pipeline import is_id_valid, to_wav2letter_format
+from voxpopuli.segmentation import is_id_valid, to_wav2letter_format
 
 
 class CutIndex(NamedTuple):
@@ -52,14 +51,18 @@ class FullSegConfig(NamedTuple):
     target_size_segment: int
     sil_symbol: str = "$"
 
+
 def save_timestamp(ts_segmentation, ts_vad, path_out):
 
-    out = {"start": ts_segmentation[0],
-           "end": ts_segmentation[1],
-           "vad": [(x[0] + ts_segmentation[0], x[1] + ts_segmentation[0]) for x in ts_vad]}
+    out = {
+        "start": ts_segmentation[0],
+        "end": ts_segmentation[1],
+        "vad": [(x[0] + ts_segmentation[0], x[1] + ts_segmentation[0]) for x in ts_vad],
+    }
 
-    with open(path_out, 'w') as f:
+    with open(path_out, "w") as f:
         json.dump(out, f, indent=2)
+
 
 def save_transcription(target: str, decoded: str, path_out: Path):
     path_out = path_out.with_suffix(".json")
@@ -70,13 +73,13 @@ def save_transcription(target: str, decoded: str, path_out: Path):
         "ler": get_ler(target, decoded),
     }
 
-    with open(path_out, "w", encoding='utf8') as file:
+    with open(path_out, "w", encoding="utf8") as file:
         json.dump(out, file, indent=2, ensure_ascii=False)
 
 
 def add_punc_from_tsv(path_tsv, align_text, chars, punc):
 
-    with open(path_tsv, 'r') as f:
+    with open(path_tsv, "r") as f:
         text = f.read()
     return reinsert_punctuation(text, align_text, chars, punc)
 
@@ -119,7 +122,7 @@ def segment_word_align(
     sil_symbol: str = "$",
     size_min_sil: float = 0.5,
     target_size_segment: float = 1,
-    punc_mark = None
+    punc_mark=None,
 ) -> List[CutIndex]:
 
     out = []
@@ -140,12 +143,12 @@ def segment_word_align(
         if align.word != sil_symbol:
             has_punc = target[index_target_transcription][-1] in punc_mark
             if not has_punc:
-                if align.word !=target[index_target_transcription]:
+                if align.word != target[index_target_transcription]:
                     print(word_align_data.file_id)
                     print(word_align_data.target)
-                    print(align.word , target[index_target_transcription])
+                    print(align.word, target[index_target_transcription])
                 assert align.word == target[index_target_transcription]
-            index_char_transcription += len(target[index_target_transcription])+1
+            index_char_transcription += len(target[index_target_transcription]) + 1
             index_target_transcription += 1
             continue
         if index_align == 0:
@@ -159,10 +162,10 @@ def segment_word_align(
                 continue
 
         if has_punc:
-            index_char_transcription+=1
+            index_char_transcription += 1
 
         out.append(
-            CutIndex(index_word=index_char_transcription-1, index_align=index_align)
+            CutIndex(index_word=index_char_transcription - 1, index_align=index_align)
         )
         cum_size = 0
 
@@ -260,7 +263,7 @@ def process_file(
     path_audio: Path,
     dir_out: Path,
     full_seg_cfg: FullSegConfig,
-    punc_mark = None
+    punc_mark=None,
 ) -> None:
 
     name_out = word_align_file.file_id
@@ -271,7 +274,7 @@ def process_file(
         sil_symbol=full_seg_cfg.sil_symbol,
         size_min_sil=full_seg_cfg.segmentation_cfg.min_size_sil,
         target_size_segment=full_seg_cfg.target_size_segment,
-        punc_mark=punc_mark
+        punc_mark=punc_mark,
     )
 
     trans_list = get_partial_transcriptions(
@@ -336,8 +339,8 @@ def process_session_lang(
     full_seg_cfg: FullSegConfig,
     max_wer: Optional[float] = None,
     max_ler: Optional[float] = None,
-    chars = string.ascii_lowercase,
-    punc_mark = None
+    chars=string.ascii_lowercase,
+    punc_mark=None,
 ):
 
     word_align_data = load_word_align_file(path_wer)
@@ -367,7 +370,14 @@ def process_session_lang(
                 print(f"ERROR: {str(path_audio)} not found")
                 continue
             dir_out.mkdir(exist_ok=True, parents=True)
-            process_file(final_wd, a_d, path_audio, dir_session, full_seg_cfg, punc_mark=punc_mark)
+            process_file(
+                final_wd,
+                a_d,
+                path_audio,
+                dir_session,
+                full_seg_cfg,
+                punc_mark=punc_mark,
+            )
 
             path_speaker = dir_audio / f"{final_wd.file_id}.speaker"
             path_out_speaker = dir_session / f"{final_wd.file_id}.speaker"
@@ -376,6 +386,7 @@ def process_session_lang(
             shutil.copyfile(path_speaker, path_out_speaker)
         except FileNotFoundError:
             continue
+
 
 class FinalAudioSegmenter:
     def __init__(
@@ -388,8 +399,8 @@ class FinalAudioSegmenter:
         full_seg_cfg: FullSegConfig,
         max_wer: Optional[float] = None,
         max_ler: Optional[float] = None,
-        chars = string.ascii_lowercase,
-        punc_mark = ";.?!",
+        chars=string.ascii_lowercase,
+        punc_mark=";.?!",
     ):
 
         self.root_audio = root_audio
@@ -422,12 +433,12 @@ class FinalAudioSegmenter:
             self.full_seg_cfg,
             self.max_wer,
             self.max_ler,
-            chars = self.chars,
-            punc_mark=self.punc_mark
+            chars=self.chars,
+            punc_mark=self.punc_mark,
         )
 
-    def get_dir_paragraph(self, session_id : str):
-        return self.root_audio / session_id / f"{session_id}_"/ "paragraphs"
+    def get_dir_paragraph(self, session_id: str):
+        return self.root_audio / "original" / session_id / "paragraphs"
 
     def process_db(self, session_ids: List[str], num_proc: int = 8):
 
@@ -529,13 +540,13 @@ if __name__ == "__main__":
     parser_segmentation.add_argument(
         "--ignore_punctuation",
         action="store_true",
-        help="Activates to ignore all punctuation and cut only by silence."
+        help="Activates to ignore all punctuation and cut only by silence.",
     )
     parser_segmentation.add_argument(
         "--path_chars",
         type=str,
         default=None,
-        help="Path to the char file containing the tokens of the considered language. (Default tokens are english latin)"
+        help="Path to the char file containing the tokens of the considered language. (Default tokens are english latin)",
     )
     parser_sil = parser.add_argument_group("VAD extraction parameters")
     parser_sil.add_argument(
@@ -589,8 +600,8 @@ if __name__ == "__main__":
 
     letters = string.ascii_lowercase
     if args.path_chars is not None:
-        with open(args.path_chars, 'r') as f:
-            letters = ''.join([x.strip() for x in f.readlines()])
+        with open(args.path_chars, "r") as f:
+            letters = "".join([x.strip() for x in f.readlines()])
 
     punc_mark = None if args.ignore_punctuation else ".;?!"
 
@@ -603,7 +614,7 @@ if __name__ == "__main__":
         full_seg_cfg,
         max_wer=args.max_wer,
         max_ler=args.max_ler,
-        chars = letters,
+        chars=letters,
         punc_mark=punc_mark,
     )
     segmenter.process_db(list(id_list), num_proc=args.n_proc)

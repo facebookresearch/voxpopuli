@@ -7,7 +7,7 @@
 from pathlib import Path
 from typing import List, NamedTuple
 
-from voxpopuli.pipeline import correct_name_fbcluster_output
+from voxpopuli.segmentation import correct_name_fbcluster_output
 
 
 class AlignedWord(NamedTuple):
