@@ -20,11 +20,6 @@ from voxpopuli.utils import multiprocess_unordered_run
 
 
 SPLITS = ["train", "dev", "test"]
-TIMESTAMP_EXTRACTORS = {
-    "labelled": lambda x: [(t[0], t[1]) for t in literal_eval(x["vad"])],
-    "per_speaker": lambda x: [(float(x["speaker_start"]), float(x["speaker_end"]))],
-    "speaker_vad": lambda x: [(float(x["start_time"]), float(x["end_time"]))]
-}
 
 
 def cut_session(info: Tuple[str, Dict[str, List[Tuple[float, float]]]]) -> None:
@@ -50,7 +45,6 @@ def get(args):
         with gzip.open(tsv_path, "rt") as f:
             metadata = csv.DictReader(f, delimiter="|")
         # Get segment into list
-        timestamp_extractor = TIMESTAMP_EXTRACTORS.get(args.mode)
         items = defaultdict(dict)
         manifest = []
         for r in metadata:
@@ -63,7 +57,7 @@ def get(args):
             cur_out_root = out_root / year
             cur_out_root.mkdir(exist_ok=True, parents=True)
             out_path = cur_out_root / "{}-{}.ogg".format(event_id, r["id_"])
-            timestamps = timestamp_extractor(r)
+            timestamps = [(t[0], t[1]) for t in literal_eval(r["vad"])]
             items[in_path.as_posix()][out_path.as_posix()] = timestamps
             manifest.append(
                 (out_path.stem, r["original_text"], r["normed_text"],
@@ -72,7 +66,7 @@ def get(args):
         items = list(items.items())
         # Segment
         multiprocess_unordered_run(items, cut_session)
-        # Output per-data-split list
+        # Output per-split manifest
         header = ["id", "raw_text", "normalized_text", "speaker_id", "split"]
         for split in SPLITS:
             with open(out_root / f"asr_{split}.tsv", "w") as f_o:
@@ -89,12 +83,6 @@ def get_args():
         help="data root path",
         type=str,
         required=True,
-    )
-    parser.add_argument(
-        "--mode",
-        required=True,
-        type=str,
-        choices=["labelled", "per_speaker", "per_speaker_vad"],
     )
     return parser.parse_args()
 

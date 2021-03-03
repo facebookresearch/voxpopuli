@@ -9,8 +9,7 @@ import tqdm
 import numpy as np
 import ast
 from pathlib import Path
-from voxpopuli.segmentation import Timestamp
-from voxpopuli.segmentation import get_path_full_audio
+from voxpopuli.segmentation import Timestamp, get_path_full_audio
 from typing import Callable, Dict, List, Tuple
 from multiprocessing import Pool
 
@@ -175,7 +174,7 @@ if __name__ == "__main__":
         required=True,
     )
     parser.add_argument(
-        "-o", "--output", help="Path to the outpit directory.", type=str, required=True
+        "-o", "--output", help="Path to the output directory.", type=str, required=True
     )
     parser.add_argument(
         "--n-procs", help="Number of processes to run", type=int, default=8

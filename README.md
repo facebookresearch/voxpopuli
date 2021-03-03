@@ -165,9 +165,9 @@ We provide pre-trained wav2vec 2.0 models
 
 | Language(s) | Pre-training Hours | Base Model (95M) |  Large Model (317M) |
 |:---:|:---:|:---:|:---:|
-| Es | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_es.pt) |
+| Es | 4.4K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_es.pt) |
 | Fr | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_fr.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_fr.pt) |
-| It | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
+| It | 4.6K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
 | Nl | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_nl.pt) |
 | Sv | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
 | All 23 languages | 100K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) / [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k_wav2letter.tar.gz) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
@@ -177,7 +177,7 @@ in the normal setting and the [few-shot phoneme recognition setting](https://git
 
 
 # What's New
-- __2021-03-02__: VoxPopuli released.
+- __2021-03-03__: VoxPopuli released.
 
 # License
 |  | License |

@@ -5,15 +5,18 @@
 
 import os
 import argparse
-import soundfile as sf
 import shutil
 from tqdm import tqdm
 from pathlib import Path
 from typing import List, Tuple, Union
 from multiprocessing import Pool
-from voxpopuli.segmentation import get_all_audio_for_lang, get_pyannote_segments
-from voxpopuli.segmentation import LangCode
+
 from auditok import AudioRegion
+import soundfile as sf
+
+from voxpopuli.segmentation import (
+    get_all_audio_for_lang, get_pyannote_segments, LangCode
+)
 
 
 def save_timestamp(path_out: Union[str, Path], start: float, end: float) -> None:
