@@ -162,7 +162,8 @@ def main(args):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser("Segment the data from the given labels")
+    parser = argparse.ArgumentParser("Segment the data from the given .tsv file. "
+                                     "Can be used for a customed segmentation of the 10k timetsamps")
     parser.add_argument(
         "--root_original",
         help="Root directory where the original data are stored.",
@@ -182,10 +183,16 @@ if __name__ == "__main__":
         "--n-procs", help="Number of processes to run", type=int, default=8
     )
     parser.add_argument(
+        "--lang", help="Lang to consider", type=str, required=True
+    )
+    parser.add_argument(
         "--mode",
         required=True,
         type=str,
         choices=["labelled", "per_speaker", "per_speaker_vad"],
+        help="labelled to segment the labelled data. "
+              "per_speaker to cut the 10k data per speaker "
+              "per_speaker_vad to add the vad of top of the segmentation of the 10k data."
     )
 
     main(parser.parse_args())
