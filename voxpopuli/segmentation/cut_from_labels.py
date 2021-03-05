@@ -54,23 +54,26 @@ def load_annot_file(
     path_extractor: Callable,
     timestamp_extractor: Callable,
     suffix: str = ".flac",
-) -> Dict[str, Dict[Path, VadData]]:
+) -> Dict[Tuple[str, str], Dict[Path, VadData]]:
     with open(path_input, "r") as csvfile:
         data = csv.reader(csvfile, delimiter="|")
 
         names = next(data)
         idx_ = {x: i for i, x in enumerate(names)}
         idx_name = idx_["session_id"]
+        idx_lang = idx_.get("lang", None)
 
         out = {}
         for row in data:
             session_name = row[idx_name]
             path_seq = path_extractor(row, idx_).with_suffix(suffix)
             vad = timestamp_extractor(row, idx_)
+            lang = "original" if idx_lang is None else row[idx_lang]
 
-            if session_name not in out:
-                out[session_name] = {}
-            out[session_name][path_seq] = vad
+            index = session_name, lang
+            if index not in out:
+                out[index] = {}
+            out[index][path_seq] = vad
 
     return out
 
@@ -108,22 +111,21 @@ class FileSegmenter:
         self,
         root_original: Path,
         root_out: Path,
-        annot_dict: Dict[str, Dict[Path, List[Timestamp]]],
-        lang: str,
+        annot_dict: Dict[str, Dict[Path, List[Timestamp]]]
     ):
 
         self.root_original = root_original
         self.root_out = root_out
         self.annot_dict = annot_dict
-        self.lang = lang
 
-    def cut_session(self, session_id: str):
+    def cut_session(self, session_id_lang: Tuple[str, str]):
+        session_id, lang = session_id_lang
         cut_session(
             self.root_original,
             self.root_out,
             session_id,
-            self.annot_dict[session_id],
-            self.lang,
+            self.annot_dict[session_id_lang],
+            lang,
         )
 
     def run(self, n_procs: int = 8):
@@ -154,13 +156,14 @@ def main(args):
         raise RuntimeError(f"Invalid mode {args.mode}")
 
     annot_dict = load_annot_file(path_annotations, path_extractor, timestamp_extractor)
-    segmenter = FileSegmenter(path_data, path_out, annot_dict, args.lang)
+    segmenter = FileSegmenter(path_data, path_out, annot_dict)
     segmenter.run(n_procs=args.n_procs)
 
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser("Segment the data from the given labels")
+    parser = argparse.ArgumentParser("Segment the data from the given .tsv file. "
+                                     "Can be used for a customed segmentation of the 10k timetsamps")
     parser.add_argument(
         "--root_original",
         help="Root directory where the original data are stored.",
@@ -174,16 +177,22 @@ if __name__ == "__main__":
         required=True,
     )
     parser.add_argument(
-        "-o", "--output", help="Path to the output directory.", type=str, required=True
+        "-o", "--output", help="Path to the outpit directory.", type=str, required=True
     )
     parser.add_argument(
         "--n-procs", help="Number of processes to run", type=int, default=8
+    )
+    parser.add_argument(
+        "--lang", help="Lang to consider", type=str, required=True
     )
     parser.add_argument(
         "--mode",
         required=True,
         type=str,
         choices=["labelled", "per_speaker", "per_speaker_vad"],
+        help="labelled to segment the labelled data. "
+              "per_speaker to cut the 10k data per speaker "
+              "per_speaker_vad to add the vad of top of the segmentation of the 10k data."
     )
 
     main(parser.parse_args())

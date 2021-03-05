@@ -116,7 +116,7 @@ which saves audios to `${ROOT}/raw_audios/original/[year]/[recording_id].ogg`.
 
 Then, segment these audios and align them with transcripts via
 ```bash
-python -m voxpopuli.get_asr_data --root [ROOT]
+python -m voxpopuli.get_asr_data --root [ROOT] --lang [LANGUAGE]
 ```
 which outputs
 - audios `${ROOT}/transcribed_data/[language]/[year]/[segment_id].ogg`

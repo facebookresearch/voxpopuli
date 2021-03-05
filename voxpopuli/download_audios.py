@@ -32,7 +32,7 @@ def download(args):
         years = YEARS
     else:
         languages = {
-            "100k": LANGUAGES, "10k": LANGUAGES, "asr": "original"
+            "100k": LANGUAGES, "10k": LANGUAGES, "asr": ["original"]
         }.get(args.subset, None)
         years = {
             "100k": YEARS, "10k": [2019, 2020], "asr": YEARS
@@ -45,12 +45,12 @@ def download(args):
 
     out_root = Path(args.root) / "raw_audios"
     out_root.mkdir(exist_ok=True, parents=True)
+    print(f"{len(url_list)} files to download...")
     for url in tqdm(url_list):
         tar_path = out_root / Path(url).name
-        if not tar_path.exists():
-            download_url(url, args.root, Path(url).name)
-            extract_archive(tar_path.as_posix())
-            os.remove(tar_path)
+        download_url(url, out_root, Path(url).name)
+        extract_archive(tar_path.as_posix())
+        os.remove(tar_path)
 
 
 def main():

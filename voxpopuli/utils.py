@@ -4,14 +4,11 @@
 # LICENSE file in the root directory of this source tree.
 
 from typing import Optional
-from multiprocessing import Pool
 
-from tqdm import tqdm
+from tqdm.contrib.concurrent import process_map
 
 
-def multiprocess_unordered_run(
+def multiprocess_run(
         a_list: list, func: callable, n_workers: Optional[int] = None
 ):
-    with Pool(processes=n_workers) as pool:
-        for _ in tqdm(pool.imap_unordered(func, a_list), total=len(a_list)):
-            pass
+    process_map(func, a_list, max_workers=n_workers, chunksize=1)

@@ -15,24 +15,29 @@ from torchaudio.datasets.utils import download_url
 import torchaudio
 
 from voxpopuli import LANGUAGES, DOWNLOAD_BASE_URL
-from voxpopuli.utils import multiprocess_unordered_run
+from voxpopuli.utils import multiprocess_run
 
 
-def _segment(item: Tuple[Path, List[Tuple[str, float, float]], Path]):
+def _segment(item: Tuple[str, List[Tuple[str, float, float]], str]):
     in_path, segments, out_root = item
-    event_id = in_path.stem
-    lang, year = in_path.parent.parent.stem, in_path.parent.stem
-    waveform, sr = torchaudio.load(in_path.as_posix())
+    _in_path = Path(in_path)
+    event_id = _in_path.stem
+    lang, year = _in_path.parent.parent.stem, _in_path.parent.stem
+    waveform, sr = torchaudio.load(in_path)
     for i, s, e in segments:
-        start, end = int(s * sr), int(e * sr)
-        torchaudio.save(
-            (out_root / lang / year / f'{event_id}_{i}.ogg').as_posix(),
-            waveform[start: end],
-            sr
-        )
+        start, end = int(s * sr), min(waveform.size(1), int(e * sr))
+        out_path = (Path(out_root) / lang / year / f'{event_id}_{i}.ogg')
+        torchaudio.save(out_path.as_posix(), waveform[:, start: end], sr)
 
 
 def get_metadata(out_root, subset):
+    def predicate(event_id):
+        if subset in {"10k", "10k_sd"}:
+            return 20190101 <= int(event_id[:8]) < 20200801
+        elif subset in LANGUAGES:
+            return event_id.endswith(subset)
+        return True
+
     filename = "unlabelled_sd" if subset == "10k_sd" else "unlabelled"
     url = f"{DOWNLOAD_BASE_URL}/annotations/{filename}.tsv.gz"
     tsv_path = out_root / Path(url).name
@@ -43,12 +48,14 @@ def get_metadata(out_root, subset):
             rows = [
                 (r["session_id"], r["id_"], r["start_time"], r["end_time"])
                 for r in csv.DictReader(f, delimiter="|")
+                if predicate(r["session_id"])
             ]
     else:
         with gzip.open(tsv_path, mode="rt") as f:
             rows = [
                 (r["event_id"], r["segment_no"], r["start"], r["end"])
                 for r in csv.DictReader(f, delimiter="\t")
+                if predicate(r["event_id"])
             ]
     return rows
 
@@ -57,24 +64,18 @@ def get(args):
     audio_root = Path(args.root) / "raw_audios"
     out_root = Path(args.root) / "unlabelled_data"
     out_root.mkdir(exist_ok=True, parents=True)
-    predicates = {lang: lambda x: x.endswith(lang) for lang in LANGUAGES}
-    predicates["100k"] = lambda x: True
-    predicates["10k"] = lambda x: 20190101 <= int(x[:8]) < 20200801
-    predicates["10k_sd"] = lambda x: 20190101 <= int(x[:8]) < 20200801
-    predicate = predicates[args.subset]
     items = defaultdict(list)
-    print("Reading segment list...")
-    metadata = get_metadata(out_root, args.subset)
-    for event_id, seg_no, start, end in tqdm(metadata):
-        if predicate(event_id):
-            lang, year = event_id.rsplit("_", 1)[1], event_id[:4]
-            cur_out_root = out_root / lang / year
-            cur_out_root.mkdir(exist_ok=True, parents=True)
-            path = audio_root / lang / year / f"{event_id}.ogg"
-            items[path].append((seg_no, float(start), float(end)))
-    items = [(k, v, out_root) for k, v in items.items()]
-    print(f"Segmenting {len(items)} files...")
-    _ = multiprocess_unordered_run(items, _segment)
+    print("Loading manifest...")
+    manifest = get_metadata(out_root, args.subset)
+    for event_id, seg_no, start, end in tqdm(manifest):
+        lang, year = event_id.rsplit("_", 1)[1], event_id[:4]
+        cur_out_root = out_root / lang / year
+        cur_out_root.mkdir(exist_ok=True, parents=True)
+        path = audio_root / lang / year / f"{event_id}.ogg"
+        items[path.as_posix()].append((seg_no, float(start), float(end)))
+    items = [(k, v, out_root.as_posix()) for k, v in items.items()]
+    print(f"Segmenting {len(items):,} files...")
+    multiprocess_run(items, _segment)
 
 
 def get_args():
