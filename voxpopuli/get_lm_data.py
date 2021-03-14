@@ -199,19 +199,26 @@ def main(args):
     text = load_from_tsv_gz(path)
     # Get Europarl data
     if args.lang != "hr":
-        url = "https://www.statmt.org/europarl/v7/europarl.tgz"
-        path = out_root / Path(url).name
-        if not path.exists():
-            download_url(url, out_root.as_posix(), Path(url).name)
-        with tarfile.open(path, "r:gz") as f:
-            members = [i for i in f.getmembers()
-                       if i.name.startswith(f"txt/{args.lang}")]
+        for filename in ["europarl.tgz", "tools.tgz"]:
+            url = f"https://www.statmt.org/europarl/v7/{filename}"
+            if not (out_root / filename).exists():
+                download_url(url, out_root.as_posix(), filename)
+        with tarfile.open(out_root / "europarl.tgz", "r:gz") as f:
+            members = [
+                i for i in f.getmembers()
+                if i.name.startswith(f"txt/{args.lang}")
+                   and not (out_root / i.name).exists()
+            ]
             f.extractall(out_root, members=members)
+        with tarfile.open(out_root / "tools.tgz", "r:gz") as f:
+            f.extractall(out_root)
         cur_text = set()
-        for p in (out_root / "txt" / args.lang).glob("*.txt"):
+        paths = list((out_root / "txt" / args.lang).glob("*.txt"))
+        for p in tqdm.tqdm(paths):
             cur_out_path = p.with_suffix('.out')
+            script_path = out_root / "tools" / "split-sentences.perl"
             os.system(
-                f"perl tools/split-sentences.perl -l {args.lang} -q "
+                f"perl {script_path.as_posix()} -l {args.lang} -q "
                 f"< {p.as_posix()} > {cur_out_path.as_posix()}"
             )
             with open(cur_out_path) as f_o:
