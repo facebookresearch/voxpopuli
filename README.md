@@ -160,6 +160,7 @@ ${KENLM_PATH}/build_binary ${n}gram_lm.arpa ${n}gram_lm.bin
 ```
 
 #  Pre-trained Models
+## wav2vec 2.0 models
 We provide pre-trained wav2vec 2.0 models 
 (both [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight) implementations):
 
@@ -175,6 +176,27 @@ We provide pre-trained wav2vec 2.0 models
 The wav2letter implementation follows [this paper](https://arxiv.org/abs/2011.00093). In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
 in the normal setting and the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
 
+## LM
+We provide 3-gram and 5-gram LMs trained with [KenLM](https://github.com/kpu/kenlm) and lexicons: 
+|  Language | LM | Lexicon | 
+|:---:|:---:|:---:|
+| Cs | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_lm.lexicon) |
+| De | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_lm.lexicon) |
+| En | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/en/en_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/en/en_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/en/en_lm.lexicon) |
+| Es | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/es/es_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/es/es_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/es/es_lm.lexicon) |
+| Et | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/et/et_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/et/et_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/et/et_lm.lexicon) |
+| Fi | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fi/fi_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fi/fi_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/fi/fi_lm.lexicon) |
+| Fr | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fr/fr_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fr/fr_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/fr/fr_lm.lexicon) |
+| Hr | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hr/hr_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hr/hr_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/hr/hr_lm.lexicon) |
+| Hu | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hu/hu_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hu/hu_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/hu/hu_lm.lexicon) |
+| It | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/it/it_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/it/it_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/it/it_lm.lexicon) |
+| Lt | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/lt/lt_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/lt/lt_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/lt/lt_lm.lexicon) |
+| Nl | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/nl/nl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/nl/nl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/nl/nl_lm.lexicon) |
+| Pl | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/pl/pl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/pl/pl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/pl/pl_lm.lexicon) |
+| Ro | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/ro/ro_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/ro/ro_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/ro/ro_lm.lexicon) |
+| Sk | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_lm.lexicon) |
+| Sl | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_lm.lexicon) |
+
 
 # What's New
 - __2021-03-03__: VoxPopuli released.
@@ -184,6 +206,7 @@ in the normal setting and the [few-shot phoneme recognition setting](https://git
 |:---:|:---:|
 | VoxPopuli Data | [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/) (see also European Parliament's [legal notice](https://www.europarl.europa.eu/legal-notice/en/) for the raw data) |
 | LM Data | (Please check out the [Europarl website](https://www.statmt.org/europarl/) for the Europarl portion) |
+| Pre-trained Models | [CC BY-NC 4.0](https://github.com/facebookresearch/covost/blob/master/LICENSE) |
 | Code | [CC BY-NC 4.0](https://github.com/facebookresearch/covost/blob/master/LICENSE) |
 
 # Contact
