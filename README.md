@@ -160,9 +160,9 @@ ${KENLM_PATH}/build_binary ${n}gram_lm.arpa ${n}gram_lm.bin
 ```
 
 #  Pre-trained Models
-## wav2vec 2.0 models
+## wav2vec 2.0
 We provide pre-trained wav2vec 2.0 models 
-(both [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight) implementations):
+(implemented in [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight)) for downstream speech tasks:
 
 | Language(s) | Pre-training Hours | Base Model (95M) |  Large Model (317M) |
 |:---:|:---:|:---:|:---:|
@@ -171,32 +171,35 @@ We provide pre-trained wav2vec 2.0 models
 | It | 4.6K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
 | Nl | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_nl.pt) |
 | Sv | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
+| All 23 languages | 10K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_10k.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_10k.pt) |
 | All 23 languages | 100K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) / [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k_wav2letter.tar.gz) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
 
 The wav2letter implementation follows [this paper](https://arxiv.org/abs/2011.00093). In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
 in the normal setting and the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
 
-## LM
-We provide 3-gram and 5-gram LMs trained with [KenLM](https://github.com/kpu/kenlm) and lexicons: 
-|  Language | LM | Lexicon | 
-|:---:|:---:|:---:|
-| Cs | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_lm.lexicon) |
-| De | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_lm.lexicon) |
-| En | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/en/en_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/en/en_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/en/en_lm.lexicon) |
-| Es | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/es/es_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/es/es_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/es/es_lm.lexicon) |
-| Et | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/et/et_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/et/et_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/et/et_lm.lexicon) |
-| Fi | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fi/fi_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fi/fi_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/fi/fi_lm.lexicon) |
-| Fr | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fr/fr_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fr/fr_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/fr/fr_lm.lexicon) |
-| Hr | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hr/hr_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hr/hr_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/hr/hr_lm.lexicon) |
-| Hu | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hu/hu_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hu/hu_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/hu/hu_lm.lexicon) |
-| It | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/it/it_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/it/it_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/it/it_lm.lexicon) |
-| Lt | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/lt/lt_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/lt/lt_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/lt/lt_lm.lexicon) |
-| Nl | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/nl/nl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/nl/nl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/nl/nl_lm.lexicon) |
-| Pl | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/pl/pl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/pl/pl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/pl/pl_lm.lexicon) |
-| Ro | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/ro/ro_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/ro/ro_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/ro/ro_lm.lexicon) |
-| Sk | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_lm.lexicon) |
-| Sl | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_lm.lexicon) |
+## ASR and LM
+For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec2 models (Large 10K) as well as n-gram LMs (trained with [KenLM](https://github.com/kpu/kenlm)) and their lexicons: 
 
+|  Language | ASR (fairseq) | LM (kenLM) | Lexicon | 
+|:---:|:---:|:---:|:---:|
+| Cs | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_cs.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_cs.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_lm.lexicon) |
+| De | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_de.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_de.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_lm.lexicon) |
+| En | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_en.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_en.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/en/en_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/en/en_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/en/en_lm.lexicon) |
+| Es | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_es.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_es.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/es/es_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/es/es_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/es/es_lm.lexicon) |
+| Et | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_et.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_et.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/et/et_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/et/et_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/et/et_lm.lexicon) |
+| Fi | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_fi.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_fi.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fi/fi_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fi/fi_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/fi/fi_lm.lexicon) |
+| Fr | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_fr.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_fr.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fr/fr_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/fr/fr_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/fr/fr_lm.lexicon) |
+| Hr | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_hr.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_hr.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hr/hr_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hr/hr_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/hr/hr_lm.lexicon) |
+| Hu | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_hu.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_hu.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hu/hu_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/hu/hu_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/hu/hu_lm.lexicon) |
+| It | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_it.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_it.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/it/it_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/it/it_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/it/it_lm.lexicon) |
+| Lt | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_lt.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_lt.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/lt/lt_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/lt/lt_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/lt/lt_lm.lexicon) |
+| Nl | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_nl.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_nl.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/nl/nl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/nl/nl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/nl/nl_lm.lexicon) |
+| Pl | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_pl.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_pl.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/pl/pl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/pl/pl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/pl/pl_lm.lexicon) |
+| Ro | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_ro.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_ro.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/ro/ro_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/ro/ro_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/ro/ro_lm.lexicon) |
+| Sk | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_sk.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_sk.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_lm.lexicon) |
+| Sl | [baseline](s3://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_sl.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_large_10k_ft_sl.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_lm.lexicon) |
+
+Please refer to the [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use of baseline model checkpoints.
 
 # What's New
 - __2021-03-03__: VoxPopuli released.
