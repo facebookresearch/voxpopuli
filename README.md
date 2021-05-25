@@ -205,9 +205,9 @@ unlabelled data.
 
 |  Language | CoVoST 2 Test (WER) | EuroParl-ST Test (WER) | Model (fairseq) |
 |:---:|:---:|:---:|:---:|
-| De | 17.3 | 21.4 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_m_de.tar) |
-| Es | 13.2 | 15.3 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_m_es.tar) |
-| Fr | 17.0 | 19.0 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_m_fr.tar) |
+| De | 17.3 | 21.4 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_de.tar) |
+| Es | 13.2 | 15.3 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_es.tar) |
+| Fr | 17.0 | 19.0 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_fr.tar) |
 
 Please refer to the [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use 
 of Transformer model checkpoints.
