@@ -199,7 +199,31 @@ For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec
 | Sk | [baseline](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_sk.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_base_10k_ft_sk.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_lm.lexicon) |
 | Sl | [baseline](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_sl.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_base_10k_ft_sl.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_lm.lexicon) |
 
-Please refer to the [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use of baseline model checkpoints.
+We also provide [CoVoST 2](https://github.com/facebookresearch/covost) + 
+[EuroParl-ST](https://www.mllp.upv.es/europarl-st/) ASR Transformer models that are self-trained on 3000h VoxPopuli 
+unlabelled data.
+
+|  Language | CoVoST 2 Test (WER) | EuroParl-ST Test (WER) | Model (fairseq) |
+|:---:|:---:|:---:|:---:|
+| De | 17.3 | 21.4 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_m_de.tar) |
+| Es | 13.2 | 15.3 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_m_es.tar) |
+| Fr | 17.0 | 19.0 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_m_fr.tar) |
+
+Please refer to the [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use 
+of Transformer model checkpoints.
+
+## Speech-to-Text Translation (ST)
+We provide [CoVoST 2](https://github.com/facebookresearch/covost) + 
+[EuroParl-ST](https://www.mllp.upv.es/europarl-st/) ST Transformer models that are jointly trained with 300h VoxPopuli 
+weakly labelled data.
+
+| Direction | CoVoST 2 Test (BLEU) | EuroParl-ST Test (BLEU) | Model (fairseq) |
+|:---:|:---:|:---:|:---:|
+| De-En | 23.0 | 23.7 | [s2t_transformer_m](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_m_de-en.tar) |
+| Es-En | 29.1 | 27.9 | [s2t_transformer_m](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_m_es-en.tar) |
+| Fr-En | 29.6 | 30.8 | [s2t_transformer_m](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_m_fr-en.tar) |
+Please refer to the 
+[S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use of these checkpoints.
 
 # What's New
 - __2021-03-03__: VoxPopuli released.
