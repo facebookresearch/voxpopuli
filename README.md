@@ -222,6 +222,7 @@ weakly labelled data.
 | De-En | 23.4 | 24.4 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_de-en.tar) |
 | Es-En | 29.7 | 28.4 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_es-en.tar) |
 | Fr-En | 30.3 | 31.1 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_fr-en.tar) |
+
 Please refer to the 
 [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use of these checkpoints.
 
