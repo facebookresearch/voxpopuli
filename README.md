@@ -205,7 +205,7 @@ Please refer to the [S2T examples](https://github.com/pytorch/fairseq/tree/maste
 
 A wav2letter implementation as well as a checkpoint pretrained on VoxPopuli 100k is also available in the [Wav2letter respository](https://github.com/flashlight/wav2letter/tree/master/recipes/joint_training_vox_populi). 
 
-The complete fine-tuned ASR baselines for this codebase should also come soon.
+The complete fine-tuned ASR baselines for this codebase should come soon.
 
 # What's New
 - __2021-03-03__: VoxPopuli released.
