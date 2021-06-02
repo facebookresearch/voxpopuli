@@ -214,7 +214,7 @@ of Transformer model checkpoints.
 
 ## Speech-to-Text Translation (ST)
 We provide [CoVoST 2](https://github.com/facebookresearch/covost) + 
-[EuroParl-ST](https://www.mllp.upv.es/europarl-st/) ST Transformer models that are jointly trained with 300h VoxPopuli 
+[EuroParl-ST](https://www.mllp.upv.es/europarl-st/) ST Transformer models that are jointly trained with 400h VoxPopuli 
 weakly labelled data.
 
 | Direction | CoVoST 2 Test (BLEU) | EuroParl-ST Test (BLEU) | Model (fairseq) |
