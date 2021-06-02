@@ -201,6 +201,12 @@ For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec
 
 Please refer to the [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use of baseline model checkpoints.
 
+## Wav2letter C++ implementation
+
+A wav2letter implementation as well as a checkpoint pretrained on VoxPopuli 100k is also available on the [Wav2letter respository](https://github.com/flashlight/wav2letter/tree/master/recipes/joint_training_vox_populi). 
+
+The complete fine-tuned ASR baselines for this codebase should also come soon.
+
 # What's New
 - __2021-03-03__: VoxPopuli released.
 
