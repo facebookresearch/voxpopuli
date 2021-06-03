@@ -172,10 +172,17 @@ We provide pre-trained wav2vec 2.0 models
 | Nl | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_nl.pt) |
 | Sv | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
 | All 23 languages | 10K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_10k.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_10k.pt) |
-| All 23 languages | 100K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) / [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k_wav2letter.tar.gz) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
+| All 23 languages | 100K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) / [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/vox_populi_100k_500iters.tar.gz) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
 
-The wav2letter implementation follows [this paper](https://arxiv.org/abs/2011.00093). In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
+In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
 in the normal setting and the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
+
+## Wav2letter C++ implementation
+
+A wav2letter implementation as well as a checkpoint pretrained on VoxPopuli 100k (base model) is also available in the [Wav2letter respository](https://github.com/flashlight/wav2letter/tree/master/recipes/joint_training_vox_populi). 
+
+The complete fine-tuned ASR baselines for this codebase shoulda come soon.
+The wav2letter implementation follows [this paper](https://arxiv.org/abs/2011.00093). 
 
 ## ASR and LM
 For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec2 models (Base 10K) as well as n-gram LMs (trained with [KenLM](https://github.com/kpu/kenlm)) and their lexicons: 
@@ -201,11 +208,6 @@ For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec
 
 Please refer to the [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use of baseline model checkpoints.
 
-## Wav2letter C++ implementation
-
-A wav2letter implementation as well as a checkpoint pretrained on VoxPopuli 100k is also available in the [Wav2letter respository](https://github.com/flashlight/wav2letter/tree/master/recipes/joint_training_vox_populi). 
-
-The complete fine-tuned ASR baselines for this codebase should come soon.
 
 # What's New
 - __2021-03-03__: VoxPopuli released.
