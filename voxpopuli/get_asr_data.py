@@ -63,13 +63,13 @@ def get(args):
         items[in_path.as_posix()][out_path.as_posix()] = timestamps
         manifest.append(
             (out_path.stem, r["original_text"], r["normed_text"],
-             r["speaker_id"], split)
+             r["speaker_id"], split, r["gender"])
         )
     items = list(items.items())
     # Segment
     multiprocess_run(items, cut_session)
     # Output per-split manifest
-    header = ["id", "raw_text", "normalized_text", "speaker_id", "split"]
+    header = ["id", "raw_text", "normalized_text", "speaker_id", "split", "gender"]
     for split in SPLITS:
         with open(out_root / f"asr_{split}.tsv", "w") as f_o:
             f_o.write("\t".join(header) + "\n")
