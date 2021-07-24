@@ -7,9 +7,9 @@ A large-scale multilingual speech corpus for representation learning, semi-super
 # Overview
 
 VoxPopuli provides 
-- 100K hours of unlabelled speech data for 23 languages
+- 400K hours of unlabelled speech data for 23 languages
 - 1.8K hours of transcribed speech data for 16 languages
-- 17.3K hours of speech-to-speech interpretation data for 16x15 directions
+- 17.3K hours of speech-to-speech interpretation data for 15x15 directions
 
 The raw data is collected from 2009-2020 [European Parliament event recordings](https://multimedia.europarl.europa.eu/en/home). 
 We acknowledge the European Parliament for creating and sharing these materials.
@@ -18,32 +18,32 @@ We acknowledge the European Parliament for creating and sharing these materials.
 
 <details><summary>Unlabelled and transcribed data</summary><p>
 
-| Language | Code | Unlabelled Hours | Transcribed Hours | Transcribed Speakers | Transcribed Tokens | LM Tokens |
+| Language | Code | Unlabelled Hours (v1/v2) | Transcribed Hours | Transcribed Speakers | Transcribed Tokens | LM Tokens |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| English | En | 4.5K | 543 | 1313 | 4.8M | 60.0M |
-| German | De | 4.5K | 282 | 531 | 2.3M | 49.8M |
-| French | Fr | 4.5K | 211 | 534 | 2.1M | 58.6M |
-| Spanish | Es | 4.4K | 166 | 305 | 1.6M | 57.3M |
-| Polish | Pl | 4.5K | 111 | 282 | 802K | 7.6M |  
-| Italian | It | 4.6K | 91 | 306 | 757K | 52.0M |
-| Romanian | Ro | 4.5K | 89 | 164 | 739K | 10.3M |
-| Hungarian | Hu | 4.4K | 63 | 143 | 431K | 12.9M |
-| Czech | Cs | 4.5K | 62 | 138 | 461K | 13.5M |
-| Dutch | Nl | 4.5K | 53 | 221 | 488K | 54.6M |
-| Finnish | Fi | 4.4K | 27 | 84 | 160K | 34.5M |
-| Croatian | Hr | 2.7K | 43 | 83 | 337K | 347K |
-| Slovak | Sk | 4.4K | 35 | 96 | 270K | 13.3M | 
-| Slovene | Sl | 4.4K | 10 | 45 | 76K | 12.6M |
-| Estonian | Et | 4.3K | 3 | 29 | 18K | 11.3M |
-| Lithuanian | Lt | 4.3K | 2 | 21 | 10K | 11.5M |
-| Portuguese | Pt | 4.4K | - | - | - | - |
-| Bulgarian | Bg | 4.3K | - | - | - | - |
-| Greek | El | 4.4K | - | - | - | - | 
-| Latvian | Lv | 4.4K | - | - | - | - |
-| Maltese | Mt | 4.4K | - | - | - | - |
-| Swedish | Sv | 4.5K | - | - | - | - |
-| Danish | Da | 4.3K | - | - | - | - |
-| Total | | 100K | 1791 | 4295 | 15.3M | 460.1M |
+| English | En | 4.5K/24.1K | 543 | 1313 | 4.8M | 60.1M |
+| German | De | 4.5K/23.2K | 282 | 531 | 2.3M | 50.0M |
+| French | Fr | 4.5K/22.8K | 211 | 534 | 2.1M | 58.6M |
+| Spanish | Es | 4.4K/21.4K | 166 | 305 | 1.6M | 57.4M |
+| Polish | Pl | 4.5K/21.2K | 111 | 282 | 802K | 13.6M |  
+| Italian | It | 4.6K/21.9K | 91 | 306 | 757K | 52.1M |
+| Romanian | Ro | 4.5K/17.9K | 89 | 164 | 739K | 10.3M |
+| Hungarian | Hu | 4.4K/17.7K | 63 | 143 | 431K | 13.0M |
+| Czech | Cs | 4.5K/18.7K | 62 | 138 | 461K | 13.5M |
+| Dutch | Nl | 4.5K/19.0K | 53 | 221 | 488K | 54.6M |
+| Finnish | Fi | 4.4K/14.2K | 27 | 84 | 160K | 34.5M |
+| Croatian | Hr | 2.7K/8.1K | 43 | 83 | 337K | 285K |
+| Slovak | Sk | 4.4K/12.1K | 35 | 96 | 270K | 13.3M | 
+| Slovene | Sl | 4.4K/11.3K | 10 | 45 | 76K | 12.6M |
+| Estonian | Et | 4.3K/10.6K | 3 | 29 | 18K | 11.3M |
+| Lithuanian | Lt | 4.3K/14.4K | 2 | 21 | 10K | 11.5M |
+| Portuguese | Pt | 4.4K/17.5K | - | - | - | - |
+| Bulgarian | Bg | 4.3K/17.6K | - | - | - | - |
+| Greek | El | 4.4K/17.7K | - | - | - | - | 
+| Latvian | Lv | 4.4K/13.1K | - | - | - | - |
+| Maltese | Mt | 4.4K/9.1K | - | - | - | - |
+| Swedish | Sv | 4.5K/16.3K | - | - | - | - |
+| Danish | Da | 4.3K/13.6K | - | - | - | - |
+| Total | | 100K/384K | 1791 | 4295 | 15M | 467M |
 
 </p></details>
 
@@ -98,8 +98,10 @@ which saves audios to `${ROOT}/raw_audios/[language]/[year]/[recording_id].ogg`.
 |  --subset | # Languages | Hours | Years | Size | 
 |:---:|:---:|:---:|:---:|:---:|
 | en, de, fr, es, pl, it, ro, hu, cs, nl, fi, hr, sk, sl, et, lt, pt, bg, el, lv, mt, sv or da | 1 | 2.7K-4.6K | 2009-2020 | 44G-75G |
+| en_v2, de_v2, fr_v2, es_v2, pl_v2, it_v2, ro_v2, hu_v2, cs_v2, nl_v2, fi_v2, hr_v2, sk_v2, sl_v2, et_v2, lt_v2, pt_v2, bg_v2, el_v2, lv_v2, mt_v2, sv_v2 or da_v2 | 1 | 8.1K-24.1K | 2009-2020 | 130G-385G |
 | 10k | 23 | 10K | 2019-2020 | 170G |
 | 100k | 23 | 100K | 2009-2020 | 1.7T |
+| 400k | 23 | 400K | 2009-2020 | 6.4T |
 
 Then, segment these audios via
 ```bash
@@ -235,6 +237,7 @@ Please refer to the
 
 
 # What's New
+- __2021-07-26__: New unlabelled data (additional 300K hours) released.
 - __2021-03-03__: VoxPopuli released.
 
 # License

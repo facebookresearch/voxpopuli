@@ -14,7 +14,7 @@ from tqdm import tqdm
 from torchaudio.datasets.utils import download_url
 import torchaudio
 
-from voxpopuli import LANGUAGES, DOWNLOAD_BASE_URL
+from voxpopuli import LANGUAGES, LANGUAGES_V2, DOWNLOAD_BASE_URL
 from voxpopuli.utils import multiprocess_run
 
 
@@ -26,19 +26,24 @@ def _segment(item: Tuple[str, List[Tuple[str, float, float]], str]):
     waveform, sr = torchaudio.load(in_path)
     for i, s, e in segments:
         start, end = int(s * sr), min(waveform.size(1), int(e * sr))
-        out_path = (Path(out_root) / lang / year / f'{event_id}_{i}.ogg')
+        out_path = Path(out_root) / lang / year / f'{event_id}_{i}.ogg'
         torchaudio.save(out_path.as_posix(), waveform[:, start: end], sr)
 
 
 def get_metadata(out_root, subset):
-    def predicate(event_id):
+    def predicate(id_):
+        is_plenary = id_.find("PLENARY") > -1
         if subset in {"10k", "10k_sd"}:
-            return 20190101 <= int(event_id[:8]) < 20200801
+            return is_plenary and 20190101 <= int(id_[:8]) < 20200801
+        elif subset in {"100k"}:
+            return is_plenary
         elif subset in LANGUAGES:
-            return event_id.endswith(subset)
+            return is_plenary and id_.endswith(subset)
+        elif subset in LANGUAGES_V2:
+            return id_.endswith(subset.split("_")[0])
         return True
 
-    filename = "unlabelled_sd" if subset == "10k_sd" else "unlabelled"
+    filename = "unlabelled_sd" if subset == "10k_sd" else "unlabelled_v2"
     url = f"{DOWNLOAD_BASE_URL}/annotations/{filename}.tsv.gz"
     tsv_path = out_root / Path(url).name
     if not tsv_path.exists():
@@ -85,7 +90,7 @@ def get_args():
     )
     parser.add_argument(
         "--subset", "-s", type=str, required=True,
-        choices=["100k", "10k", "10k_sd"] + LANGUAGES,
+        choices=["400k", "100k", "10k", "10k_sd"] + LANGUAGES + LANGUAGES_V2,
         help="data subset to download"
     )
     return parser.parse_args()

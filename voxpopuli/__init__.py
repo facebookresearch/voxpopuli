@@ -7,6 +7,7 @@ LANGUAGES = [
     "en", "de", "fr", "es", "pl", "it", "ro", "hu", "cs", "nl", "fi", "hr",
     "sk", "sl", "et", "lt", "pt", "bg", "el", "lv", "mt", "sv", "da"
 ]
+LANGUAGES_V2 = [f"{x}_v2" for x in LANGUAGES]
 
 YEARS = list(range(2009, 2020 + 1))
 
