@@ -1,6 +1,6 @@
  VoxPopuli
 =====
-[https://arxiv.org/abs/2101.00390](https://arxiv.org/abs/2101.00390)
+[https://aclanthology.org/2021.acl-long.80](https://aclanthology.org/2021.acl-long.80)
 
 A large-scale multilingual speech corpus for representation learning, semi-supervised learning and interpretation.
 
@@ -253,10 +253,23 @@ Changhan Wang (changhan@fb.com), Morgane Rivière (mriviere@fb.com), Ann Lee (an
 
 # Citation
 ```
-@article{wang2021voxpopuli,
-  title={VoxPopuli: A Large-Scale Multilingual Speech Corpus for Representation Learning, Semi-Supervised Learning and Interpretation},
-  author={Wang, Changhan and Rivi{\`e}re, Morgane and Lee, Ann and Wu, Anne and Talnikar, Chaitanya and Haziza, Daniel and Williamson, Mary and Pino, Juan and Dupoux, Emmanuel},
-  journal={arXiv preprint arXiv:2101.00390},
-  year={2021}
+@inproceedings{wang-etal-2021-voxpopuli,
+    title = "{V}ox{P}opuli: A Large-Scale Multilingual Speech Corpus for Representation Learning, Semi-Supervised Learning and Interpretation",
+    author = "Wang, Changhan  and
+      Riviere, Morgane  and
+      Lee, Ann  and
+      Wu, Anne  and
+      Talnikar, Chaitanya  and
+      Haziza, Daniel  and
+      Williamson, Mary  and
+      Pino, Juan  and
+      Dupoux, Emmanuel",
+    booktitle = "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)",
+    month = aug,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.acl-long.80",
+    pages = "993--1003",
 }
 ```
