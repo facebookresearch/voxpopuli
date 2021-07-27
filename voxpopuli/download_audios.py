@@ -10,7 +10,7 @@ from pathlib import Path
 from tqdm import tqdm
 from torchaudio.datasets.utils import download_url, extract_archive
 
-from voxpopuli import LANGUAGES, YEARS, DOWNLOAD_BASE_URL
+from voxpopuli import LANGUAGES, LANGUAGES_V2, YEARS, DOWNLOAD_BASE_URL
 
 
 def get_args():
@@ -20,22 +20,31 @@ def get_args():
     )
     parser.add_argument(
         "--subset", "-s", type=str, required=True,
-        choices=["100k", "10k", "asr"] + LANGUAGES,
+        choices=["400k", "100k", "10k", "asr"] + LANGUAGES + LANGUAGES_V2,
         help="data subset to download"
     )
     return parser.parse_args()
 
 
 def download(args):
-    if args.subset in LANGUAGES:
+    if args.subset in LANGUAGES_V2:
+        languages = [args.subset.split("_")[0]]
+        years = YEARS + [f"{y}_2" for y in YEARS]
+    elif args.subset in LANGUAGES:
         languages = [args.subset]
         years = YEARS
     else:
         languages = {
-            "100k": LANGUAGES, "10k": LANGUAGES, "asr": ["original"]
+            "400k": LANGUAGES,
+            "100k": LANGUAGES,
+            "10k": LANGUAGES,
+            "asr": ["original"]
         }.get(args.subset, None)
         years = {
-            "100k": YEARS, "10k": [2019, 2020], "asr": YEARS
+            "400k": YEARS + [f"{y}_2" for y in YEARS],
+            "100k": YEARS,
+            "10k": [2019, 2020],
+            "asr": YEARS
         }.get(args.subset, None)
 
     url_list = []
@@ -48,7 +57,7 @@ def download(args):
     print(f"{len(url_list)} files to download...")
     for url in tqdm(url_list):
         tar_path = out_root / Path(url).name
-        download_url(url, out_root, Path(url).name)
+        download_url(url, out_root.as_posix(), Path(url).name)
         extract_archive(tar_path.as_posix())
         os.remove(tar_path)
 
