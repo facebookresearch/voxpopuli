@@ -164,7 +164,10 @@ ${KENLM_PATH}/build_binary ${n}gram_lm.arpa ${n}gram_lm.bin
 #  Pre-trained Models
 ## wav2vec 2.0
 We provide pre-trained wav2vec 2.0 models 
-(implemented in [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight)) for downstream speech tasks:
+(implemented in [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight)) 
+for downstream speech tasks. Each language is covered by a monolingual _Base_ model and multilingual _Large_ models that 
+combine languages in the same family or all languages. See also [XLS-R](https://github.com/pytorch/fairseq/tree/main/examples/wav2vec/xlsr)
+for larger-scale (up to 2B) multilingual models trained on VoxPopuli (400K hours).
 
 |   Language(s)    |     Family     |  PT Hours  |                                                                             Base Model (95M)                                                                              |                                                                                      Large Model (317M)                                                                                       |
 |:----------------:|:--------------:|:----------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -180,6 +183,7 @@ We provide pre-trained wav2vec 2.0 models
 |     Da (V2)      | North Germanic |   13.6K    |                                             [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_da_v2.pt)                                             |                                       [fairseq V2 North Germanic](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_north_germanic_v2.pt)                                        |
 |     Bg (V2)      |     Slavic     |   17.6K    |                                             [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_bg_v2.pt)                                             |                                                 [fairseq V2 Slavic](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_slavic_v2.pt)                                                 |
 |     Cs (V2)      |     Slavic     |   18.7K    |                                             [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_cs_v2.pt)                                             |                                                 [fairseq V2 Slavic](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_slavic_v2.pt)                                                 |
+|     Hr (V2)      |     Slavic     |    8.1K    |                                             [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_hr_v2.pt)                                             |                                                 [fairseq V2 Slavic](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_slavic_v2.pt)                                                 |
 |     Pl (V2)      |     Slavic     |   21.2K    |                                             [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_pl_v2.pt)                                             |                                                 [fairseq V2 Slavic](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_slavic_v2.pt)                                                 |
 |     Sk (V2)      |     Slavic     |   12.1K    |                                             [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sk_v2.pt)                                             |                                                 [fairseq V2 Slavic](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_slavic_v2.pt)                                                 |
 |     Sl (V2)      |     Slavic     |   11.3K    |                                             [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sl_v2.pt)                                             |                                                 [fairseq V2 Slavic](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_slavic_v2.pt)                                                 |
@@ -193,7 +197,7 @@ We provide pre-trained wav2vec 2.0 models
 | All 23 languages |       -        |    10K     |                                              [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_10k.pt)                                              |                                                       [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_10k.pt)                                                        |
 | All 23 languages |       -        |    100K    | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) / [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/vox_populi_100k_500iters.tar.gz) |                                                       [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt)                                                       |
 
-In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
+In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated part of these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
 in the normal setting and the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
 
 ## Wav2letter C++ implementation
@@ -254,6 +258,7 @@ Please refer to the
 
 
 # What's New
+- __2022-01-15__: New [wav2vec 2.0 pre-trained models](https://github.com/facebookresearch/voxpopuli#wav2vec-20) released.
 - __2021-07-26__: New unlabelled data (additional 300K hours) released.
 - __2021-03-03__: VoxPopuli released.
 
