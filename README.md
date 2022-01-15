@@ -166,15 +166,15 @@ ${KENLM_PATH}/build_binary ${n}gram_lm.arpa ${n}gram_lm.bin
 We provide pre-trained wav2vec 2.0 models 
 (implemented in [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight)) for downstream speech tasks:
 
-| Language(s) | Pre-training Hours | Base Model (95M) |  Large Model (317M) |
-|:---:|:---:|:---:|:---:|
-| Es | 4.4K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_es.pt) |
-| Fr | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_fr.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_fr.pt) |
-| It | 4.6K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
-| Nl | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_nl.pt) |
-| Sv | 4.5K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
-| All 23 languages | 10K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_10k.pt) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_10k.pt) |
-| All 23 languages | 100K | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) / [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/vox_populi_100k_500iters.tar.gz) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
+|   Language(s)    | Pre-training Hours |                                                                             Base Model (95M)                                                                              |  Large Model (317M) |
+|:----------------:|:------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:---:|
+|    Es (V1/V2)    |     4.4K/21.4K     |     fairseq [V1](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es.pt) / [V2](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es_v2.pt)      | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_es.pt) |
+|    Fr (V1/V2)    |     4.5K/22.8K     |     fairseq [V1](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_fr.pt) / [V2](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_fr_v2.pt)      | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_fr.pt) |
+|    It (V1/V2)    |     4.6K/21.9K     |     fairseq [V1](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it.pt) / [V2](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_it_v2.pt)      | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_it.pt) |
+|    Nl (V1/V2)    |     4.5K/19.0K     |     fairseq [V1](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl.pt) / [V2](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_nl_v2.pt)      | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_nl.pt) |
+|    Sv (V1/V2)    |       4.5K/16.3K       |     fairseq [V1](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv.pt) / [V2](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_sv_v2.pt)      | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_sv.pt) |
+| All 23 languages |        10K         |                                              [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_10k.pt)                                              | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_10k.pt) |
+| All 23 languages |        100K        | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) / [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/vox_populi_100k_500iters.tar.gz) | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt) |
 
 In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
 in the normal setting and the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
