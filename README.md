@@ -6,12 +6,13 @@ A large-scale multilingual speech corpus for representation learning, semi-super
 
 # Overview
 
-VoxPopuli provides 
+VoxPopuli provides
 - 400K hours of unlabelled speech data for 23 languages
 - 1.8K hours of transcribed speech data for 16 languages
 - 17.3K hours of speech-to-speech interpretation data for 15x15 directions
+- 29 hours of transcribed speech data of non-native English intended for research in ASR for accented speech (15 L2 accents)
 
-The raw data is collected from 2009-2020 [European Parliament event recordings](https://multimedia.europarl.europa.eu/en/home). 
+The raw data is collected from 2009-2020 [European Parliament event recordings](https://multimedia.europarl.europa.eu/en/home).
 We acknowledge the European Parliament for creating and sharing these materials.
 
 #### Detailed statistics
@@ -24,7 +25,7 @@ We acknowledge the European Parliament for creating and sharing these materials.
 | German | De | 4.5K/23.2K | 282 | 531 | 2.3M | 50.0M |
 | French | Fr | 4.5K/22.8K | 211 | 534 | 2.1M | 58.6M |
 | Spanish | Es | 4.4K/21.4K | 166 | 305 | 1.6M | 57.4M |
-| Polish | Pl | 4.5K/21.2K | 111 | 282 | 802K | 13.6M |  
+| Polish | Pl | 4.5K/21.2K | 111 | 282 | 802K | 13.6M |
 | Italian | It | 4.6K/21.9K | 91 | 306 | 757K | 52.1M |
 | Romanian | Ro | 4.5K/17.9K | 89 | 164 | 739K | 10.3M |
 | Hungarian | Hu | 4.4K/17.7K | 63 | 143 | 431K | 13.0M |
@@ -32,13 +33,13 @@ We acknowledge the European Parliament for creating and sharing these materials.
 | Dutch | Nl | 4.5K/19.0K | 53 | 221 | 488K | 54.6M |
 | Finnish | Fi | 4.4K/14.2K | 27 | 84 | 160K | 34.5M |
 | Croatian | Hr | 2.7K/8.1K | 43 | 83 | 337K | 285K |
-| Slovak | Sk | 4.4K/12.1K | 35 | 96 | 270K | 13.3M | 
+| Slovak | Sk | 4.4K/12.1K | 35 | 96 | 270K | 13.3M |
 | Slovene | Sl | 4.4K/11.3K | 10 | 45 | 76K | 12.6M |
 | Estonian | Et | 4.3K/10.6K | 3 | 29 | 18K | 11.3M |
 | Lithuanian | Lt | 4.3K/14.4K | 2 | 21 | 10K | 11.5M |
 | Portuguese | Pt | 4.4K/17.5K | - | - | - | - |
 | Bulgarian | Bg | 4.3K/17.6K | - | - | - | - |
-| Greek | El | 4.4K/17.7K | - | - | - | - | 
+| Greek | El | 4.4K/17.7K | - | - | - | - |
 | Latvian | Lv | 4.4K/13.1K | - | - | - | - |
 | Maltese | Mt | 4.4K/9.1K | - | - | - | - |
 | Swedish | Sv | 4.5K/16.3K | - | - | - | - |
@@ -70,10 +71,31 @@ We acknowledge the European Parliament for creating and sharing these materials.
 
 </p></details>
 
+<details><summary>Accented speech transcribed data</summary><p>
+| Accent | Code | Transcribed Hours | Transcribed Speakers |
+|:---:|:---:|:---:|:---:|
+| Dutch | en_nl | 3.52 | 45 |
+| German | en_de | 3.52 | 84 |
+| Czech | en_cs | 3.30 | 26 |
+| Polish | en_pl | 3.23 | 33 |
+| French | en_fr | 2.56 | 27 |
+| Hungarian | en_hu | 2.33 | 23 |
+| Finnish | en_fi | 2.18 | 20 |
+| Romanian | en_ro | 1.85 | 27 |
+| Slovak | en_sk | 1.46 | 17 |
+| Spanish | en_es | 1.42 | 18 |
+| Italian | en_it | 1.11 | 15 |
+| Estonian | en_et | 1.08 | 6 |
+| Lithuanian | en_lt | 0.65 | 7 |
+| Croatian | en_hr | 0.42 | 9 |
+| Slovene | en_sl | 0.25 | 7 |
+
+</p></details>
+
 # Getting Data
-We provide raw audios as well as scripts to segment and align them with transcription/interpretation. The output format 
-is [Ogg Vorbis](https://en.wikipedia.org/wiki/Vorbis) (16000Hz, 16-bit, mono-channel), 
-which is supported by common libraries such as `libsndfile` and `libsox` (they have Python frontends 
+We provide raw audios as well as scripts to segment and align them with transcription/interpretation. The output format
+is [Ogg Vorbis](https://en.wikipedia.org/wiki/Vorbis) (16000Hz, 16-bit, mono-channel),
+which is supported by common libraries such as `libsndfile` and `libsox` (they have Python frontends
 by [soundfile](https://github.com/bastibe/python-soundfile), [torchaudio](https://github.com/pytorch/audio), etc.).
 
 As the first step, clone this repo for the processing scripts
@@ -95,7 +117,7 @@ which saves audios to `${ROOT}/raw_audios/[language]/[year]/[recording_id].ogg`.
 
 `SUBSET` specifies the data subset to download:
 
-|  --subset | # Languages | Hours | Years | Size | 
+|  --subset | # Languages | Hours | Years | Size |
 |:---:|:---:|:---:|:---:|:---:|
 | en, de, fr, es, pl, it, ro, hu, cs, nl, fi, hr, sk, sl, et, lt, pt, bg, el, lv, mt, sv or da | 1 | 2.7K-4.6K | 2009-2020 | 44G-75G |
 | en_v2, de_v2, fr_v2, es_v2, pl_v2, it_v2, ro_v2, hu_v2, cs_v2, nl_v2, fi_v2, hr_v2, sk_v2, sl_v2, et_v2, lt_v2, pt_v2, bg_v2, el_v2, lv_v2, mt_v2, sv_v2 or da_v2 | 1 | 8.1K-24.1K | 2009-2020 | 130G-385G |
@@ -122,7 +144,11 @@ python -m voxpopuli.get_asr_data --root [ROOT] --lang [LANGUAGE]
 ```
 which outputs
 - audios `${ROOT}/transcribed_data/[language]/[year]/[segment_id].ogg`
-- per-split manifest (ID, transcript, speaker ID) `${ROOT}/transcribed_data/[language]/asr_[split].tsv` 
+- per-split manifest (ID, transcript, speaker ID) `${ROOT}/transcribed_data/[language]/asr_[split].tsv`
+
+**Accented transcribed data**
+To retrieve the transcribed accented speech data, follow the above steps with `--lang [LANGUAGE]_accented` (e.g. `--lang en_accented`).
+Note that the accented speech data is only composed of a test set for now.
 
 ### Speech-to-Speech Interpretation Data
 First, follow the instructions above to set up ASR data (source audios and transcripts).
@@ -141,7 +167,7 @@ which outputs
 - target audios `${ROOT}/transcribed_data/[language]/[target_language]/[year]/[segment_id].ogg`
 - manifest (source ID, transcript, speaker ID, target ID) `${ROOT}/transcribed_data/[language]/[target_language]/s2s.tsv`
 
-We also human-transcribe part of the target audios (for English, French and Spanish only) to allow more accurate alignments. 
+We also human-transcribe part of the target audios (for English, French and Spanish only) to allow more accurate alignments.
 To use them instead of machine transcriptions in the alignments, add `--use-annotated-target` to the command line.
 
 ### Language Modeling (LM) Data
@@ -163,9 +189,9 @@ ${KENLM_PATH}/build_binary ${n}gram_lm.arpa ${n}gram_lm.bin
 
 #  Pre-trained Models
 ## wav2vec 2.0
-We provide pre-trained wav2vec 2.0 models 
-(implemented in [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight)) 
-for downstream speech tasks. Each language is covered by a monolingual _Base_ model and multilingual _Large_ models that 
+We provide pre-trained wav2vec 2.0 models
+(implemented in [fairseq](https://github.com/pytorch/fairseq) and [wav2letter/flashlight](https://github.com/facebookresearch/flashlight))
+for downstream speech tasks. Each language is covered by a monolingual _Base_ model and multilingual _Large_ models that
 combine languages in the same family or all languages. See also [XLS-R](https://github.com/pytorch/fairseq/tree/main/examples/wav2vec/xlsr)
 for larger-scale (up to 2B) multilingual models trained on VoxPopuli (400K hours).
 
@@ -197,20 +223,20 @@ for larger-scale (up to 2B) multilingual models trained on VoxPopuli (400K hours
 | All 23 languages |       -        |    10K     |                                              [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_10k.pt)                                              |                                                       [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_10k.pt)                                                        |
 | All 23 languages |       -        |    100K    | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) / [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/vox_populi_100k_500iters.tar.gz) |                                                       [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt)                                                       |
 
-In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated part of these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus 
+In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated part of these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus
 in the normal setting and the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
 
 ## Wav2letter C++ implementation
 
-A wav2letter implementation as well as a checkpoint pretrained on VoxPopuli 100k (base model) is also available in the [Wav2letter respository](https://github.com/flashlight/wav2letter/tree/master/recipes/joint_training_vox_populi). 
+A wav2letter implementation as well as a checkpoint pretrained on VoxPopuli 100k (base model) is also available in the [Wav2letter respository](https://github.com/flashlight/wav2letter/tree/master/recipes/joint_training_vox_populi).
 
 The complete fine-tuned ASR baselines for this codebase shoulda come soon.
-The wav2letter implementation follows [this paper](https://arxiv.org/abs/2011.00093). 
+The wav2letter implementation follows [this paper](https://arxiv.org/abs/2011.00093).
 
 ## ASR and LM
-For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec2 models (Base 10K) as well as n-gram LMs (trained with [KenLM](https://github.com/kpu/kenlm)) and their lexicons: 
+For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec2 models (Base 10K) as well as n-gram LMs (trained with [KenLM](https://github.com/kpu/kenlm)) and their lexicons:
 
-|  Language | ASR (fairseq) | LM (kenLM) | Lexicon | 
+|  Language | ASR (fairseq) | LM (kenLM) | Lexicon |
 |:---:|:---:|:---:|:---:|
 | Cs | [baseline](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_cs.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_base_10k_ft_cs.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/cs/cs_lm.lexicon) |
 | De | [baseline](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_de.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_base_10k_ft_de.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/de/de_lm.lexicon) |
@@ -229,8 +255,8 @@ For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec
 | Sk | [baseline](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_sk.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_base_10k_ft_sk.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_lm.lexicon) |
 | Sl | [baseline](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_sl.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_base_10k_ft_sl.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_lm.lexicon) |
 
-We also provide [CoVoST 2](https://github.com/facebookresearch/covost) + 
-[EuroParl-ST](https://www.mllp.upv.es/europarl-st/) ASR Transformer models that are self-trained on 3000h VoxPopuli 
+We also provide [CoVoST 2](https://github.com/facebookresearch/covost) +
+[EuroParl-ST](https://www.mllp.upv.es/europarl-st/) ASR Transformer models that are self-trained on 3000h VoxPopuli
 unlabelled data.
 
 |  Language | CoVoST 2 Test (WER) | EuroParl-ST Test (WER) | Model (fairseq) |
@@ -239,12 +265,12 @@ unlabelled data.
 | Es | 13.2 | 15.3 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_es.tar) |
 | Fr | 17.0 | 19.0 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_fr.tar) |
 
-Please refer to the [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use 
+Please refer to the [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use
 of Transformer model checkpoints.
 
 ## Speech-to-Text Translation (ST)
-We provide [CoVoST 2](https://github.com/facebookresearch/covost) + 
-[EuroParl-ST](https://www.mllp.upv.es/europarl-st/) ST Transformer models that are jointly trained with 400h VoxPopuli 
+We provide [CoVoST 2](https://github.com/facebookresearch/covost) +
+[EuroParl-ST](https://www.mllp.upv.es/europarl-st/) ST Transformer models that are jointly trained with 400h VoxPopuli
 weakly labelled data.
 
 | Direction | CoVoST 2 Test (BLEU) | EuroParl-ST Test (BLEU) | Model (fairseq) |
@@ -253,7 +279,7 @@ weakly labelled data.
 | Es-En | 29.7 | 28.4 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_es-en.tar) |
 | Fr-En | 30.3 | 31.1 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_fr-en.tar) |
 
-Please refer to the 
+Please refer to the
 [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use of these checkpoints.
 
 
