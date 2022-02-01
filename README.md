@@ -284,6 +284,7 @@ Please refer to the
 
 
 # What's New
+- __2022-02-01__: New labelled accented English speech data released.
 - __2022-01-15__: New [wav2vec 2.0 pre-trained models](https://github.com/facebookresearch/voxpopuli#wav2vec-20) released.
 - __2021-07-26__: New unlabelled data (additional 300K hours) released.
 - __2021-03-03__: VoxPopuli released.
