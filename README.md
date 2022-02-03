@@ -92,6 +92,12 @@ We acknowledge the European Parliament for creating and sharing these materials.
 
 </p></details>
 
+# What's New
+- __2022-02-01__: New labelled accented English speech data released.
+- __2022-01-15__: New [wav2vec 2.0 pre-trained models](https://github.com/facebookresearch/voxpopuli#wav2vec-20) released.
+- __2021-07-26__: New unlabelled data (additional 300K hours) released.
+- __2021-03-03__: VoxPopuli released.
+
 # Getting Data
 We provide raw audios as well as scripts to segment and align them with transcription/interpretation. The output format
 is [Ogg Vorbis](https://en.wikipedia.org/wiki/Vorbis) (16000Hz, 16-bit, mono-channel),
@@ -281,13 +287,6 @@ weakly labelled data.
 
 Please refer to the
 [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use of these checkpoints.
-
-
-# What's New
-- __2022-02-01__: New labelled accented English speech data released.
-- __2022-01-15__: New [wav2vec 2.0 pre-trained models](https://github.com/facebookresearch/voxpopuli#wav2vec-20) released.
-- __2021-07-26__: New unlabelled data (additional 300K hours) released.
-- __2021-03-03__: VoxPopuli released.
 
 # License
 |  | License |
