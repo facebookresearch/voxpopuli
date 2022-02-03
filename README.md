@@ -202,6 +202,8 @@ for downstream speech tasks. Each language is covered by a monolingual _Base_ mo
 combine languages in the same family or all languages. See also [XLS-R](https://github.com/pytorch/fairseq/tree/main/examples/wav2vec/xlsr)
 for larger-scale (up to 2B) multilingual models trained on VoxPopuli (400K hours).
 
+<details><summary><b>Download</b></summary><p>
+
 |   Language(s)    |     Family     |  PT Hours  |                                                                             Base Model (95M)                                                                              |                                                                                      Large Model (317M)                                                                                       |
 |:----------------:|:--------------:|:----------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 |    Es (V1/V2)    |    Romance     | 4.4K/21.4K |     fairseq [V1](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es.pt) / [V2](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_es_v2.pt)      |        fairseq [V1](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_es.pt) / [V2 Romance](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_romance_v2.pt)        |
@@ -230,6 +232,8 @@ for larger-scale (up to 2B) multilingual models trained on VoxPopuli (400K hours
 | All 23 languages |       -        |    10K     |                                              [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_10k.pt)                                              |                                                       [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_10k.pt)                                                        |
 | All 23 languages |       -        |    100K    | [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_base_100k.pt) / [wav2letter](https://dl.fbaipublicfiles.com/voxpopuli/vox_populi_100k_500iters.tar.gz) |                                                       [fairseq](https://dl.fbaipublicfiles.com/voxpopuli/models/wav2vec2_large_100k.pt)                                                       |
 
+</p></details>
+
 In [our paper](https://arxiv.org/pdf/2101.00390.pdf) (Section 4.3.1), we evaluated part of these models on the [Common Voice](https://commonvoice.mozilla.org/) corpus
 in the normal setting and the [few-shot phoneme recognition setting](https://github.com/facebookresearch/CPC_audio#cross-lingual-transfer).
 
@@ -241,7 +245,9 @@ The complete fine-tuned ASR baselines for this codebase shoulda come soon.
 The wav2letter implementation follows [this paper](https://arxiv.org/abs/2011.00093).
 
 ## ASR and LM
-For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec2 models (Base 10K) as well as n-gram LMs (trained with [KenLM](https://github.com/kpu/kenlm)) and their lexicons:
+For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec2 models (Base 10K) as well as n-gram LMs (trained with [KenLM](https://github.com/kpu/kenlm)) and their lexicons.
+
+<details><summary><b>Download</b></summary><p>
 
 |  Language | ASR (fairseq) | LM (kenLM) | Lexicon |
 |:---:|:---:|:---:|:---:|
@@ -262,15 +268,21 @@ For the VoxPopuli ASR task, we provide Transformer baselines, fine-tuned wav2vec
 | Sk | [baseline](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_sk.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_base_10k_ft_sk.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sk/sk_lm.lexicon) |
 | Sl | [baseline](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/s2t_transformer_s_sl.tar), [fine-tuned wav2vec2](https://dl.fbaipublicfiles.com/voxpopuli/models/vp_asr/wav2vec2_base_10k_ft_sl.tar) | [3-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_3gram_lm.bin), [5-gram](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_5gram_lm.bin) | [lexicon](https://dl.fbaipublicfiles.com/voxpopuli/lm/sl/sl_lm.lexicon) |
 
+</p></details>
+ 
 We also provide [CoVoST 2](https://github.com/facebookresearch/covost) +
 [EuroParl-ST](https://www.mllp.upv.es/europarl-st/) ASR Transformer models that are self-trained on 3000h VoxPopuli
 unlabelled data.
+
+<details><summary><b>Download</b></summary><p>
 
 |  Language | CoVoST 2 Test (WER) | EuroParl-ST Test (WER) | Model (fairseq) |
 |:---:|:---:|:---:|:---:|
 | De | 17.3 | 21.4 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_de.tar) |
 | Es | 13.2 | 15.3 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_es.tar) |
 | Fr | 17.0 | 19.0 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_fr.tar) |
+ 
+</p></details>
 
 Please refer to the [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use
 of Transformer model checkpoints.
@@ -280,12 +292,16 @@ We provide [CoVoST 2](https://github.com/facebookresearch/covost) +
 [EuroParl-ST](https://www.mllp.upv.es/europarl-st/) ST Transformer models that are jointly trained with 400h VoxPopuli
 weakly labelled data.
 
+<details><summary><b>Download</b></summary><p>
+
 | Direction | CoVoST 2 Test (BLEU) | EuroParl-ST Test (BLEU) | Model (fairseq) |
 |:---:|:---:|:---:|:---:|
 | De-En | 23.4 | 24.4 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_de-en.tar) |
 | Es-En | 29.7 | 28.4 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_es-en.tar) |
 | Fr-En | 30.3 | 31.1 | [s2t_transformer_l](https://dl.fbaipublicfiles.com/voxpopuli/models/cvst_epst/s2t_transformer_l_fr-en.tar) |
 
+</p></details>
+ 
 Please refer to the
 [S2T examples](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) for the use of these checkpoints.
 
