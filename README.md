@@ -72,6 +72,7 @@ We acknowledge the European Parliament for creating and sharing these materials.
 </p></details>
 
 <details><summary>Accented speech transcribed data</summary><p>
+
 | Accent | Code | Transcribed Hours | Transcribed Speakers |
 |:---:|:---:|:---:|:---:|
 | Dutch | en_nl | 3.52 | 45 |
