@@ -15,6 +15,9 @@ ASR_LANGUAGES = [
     "en", "de", "fr", "es", "pl", "it", "ro", "hu", "cs", "nl", "fi", "hr",
     "sk", "sl", "et", "lt"
 ]
+ASR_ACCENTED_LANGUAGES = [
+    "en_accented"
+]
 
 S2S_SRC_LANGUAGES = ASR_LANGUAGES
 

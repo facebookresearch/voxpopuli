@@ -15,7 +15,7 @@ import torch
 import torchaudio
 from torchaudio.datasets.utils import download_url
 
-from voxpopuli import ASR_LANGUAGES, DOWNLOAD_BASE_URL
+from voxpopuli import ASR_LANGUAGES, ASR_ACCENTED_LANGUAGES, DOWNLOAD_BASE_URL
 from voxpopuli.utils import multiprocess_run
 
 
@@ -62,14 +62,25 @@ def get(args):
         timestamps = [(t[0], t[1]) for t in literal_eval(r["vad"])]
         items[in_path.as_posix()][out_path.as_posix()] = timestamps
         manifest.append(
-            (out_path.stem, r["original_text"], r["normed_text"],
-             r["speaker_id"], split, r["gender"])
+            (
+             out_path.stem,
+             r["original_text"],
+             r["normed_text"],
+             r["speaker_id"],
+             split,
+             r["gender"],
+             r.get("is_gold_transcript", str(False)),
+             r.get("accent", str(None))
+            )
         )
     items = list(items.items())
     # Segment
     multiprocess_run(items, cut_session)
     # Output per-split manifest
-    header = ["id", "raw_text", "normalized_text", "speaker_id", "split", "gender"]
+    header = [
+        "id", "raw_text", "normalized_text", "speaker_id", "split",
+        "gender", "is_gold_transcript", "accent"
+    ]
     for split in SPLITS:
         with open(out_root / f"asr_{split}.tsv", "w") as f_o:
             f_o.write("\t".join(header) + "\n")
@@ -90,7 +101,7 @@ def get_args():
         "--lang",
         required=True,
         type=str,
-        choices=ASR_LANGUAGES,
+        choices=ASR_LANGUAGES + ASR_ACCENTED_LANGUAGES,
     )
     return parser.parse_args()
 
