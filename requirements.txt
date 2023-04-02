@@ -1,5 +1,5 @@
 tqdm
-torchaudio
+torchaudio==0.13.1
 num2words
 edlib
 editdistance
